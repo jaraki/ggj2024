@@ -23,6 +23,26 @@ public class PlayerController : MonoBehaviour {
         this.input = input;
 
         input.actions["Jump"].performed += Jump;
+        input.actions["RotateRight"].performed += RotateRight;
+        input.actions["RotateLeft"].performed += RotateLeft;
+    }
+
+    float targetZRot = 0.0f;
+
+    Quaternion startRot = Quaternion.identity;
+    Quaternion targetRot = Quaternion.identity;
+
+    private void RotateRight(InputAction.CallbackContext obj) {
+        startRot = body.rotation;
+        targetZRot -= 90;
+        targetRot *= Quaternion.Euler(0, 0, -90);
+        time = 0.0f;
+    }
+    private void RotateLeft(InputAction.CallbackContext obj) {
+        startRot = body.rotation;
+        targetZRot += 90;
+        targetRot *= Quaternion.Euler(0, 0, 90);
+        time = 0.0f;
     }
 
     float groundedLockout = 0.0f;
@@ -36,10 +56,15 @@ public class PlayerController : MonoBehaviour {
         groundedLockout = 0.1f;
     }
 
+    float time = 0.0f;
     void Update() {
         if (!input) {
             return;
         }
+        time += Time.deltaTime * 2.0f;
+        Quaternion r = Quaternion.Lerp(startRot, targetRot, time);
+        body.MoveRotation(r);
+        //body.rotation = Quaternion.Euler(rot);
         groundedLockout -= Time.deltaTime;
         var move = input.actions["Move"].ReadValue<Vector2>();
         move *= speed;

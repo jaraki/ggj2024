@@ -46,9 +46,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""JoinGame"",
+                    ""name"": ""RotateRight"",
                     ""type"": ""Button"",
-                    ""id"": ""71bb0fb2-ffa7-4ee8-b920-03870f23b9b6"",
+                    ""id"": ""17a14c9f-105d-42d8-8d3e-1063700785b5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa0feeb7-fb4f-43b0-9a96-e2e26c7c8a83"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -146,23 +155,45 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9334f50a-e352-451f-b8ee-2dba2cfb88bb"",
-                    ""path"": ""<Keyboard>/enter"",
+                    ""id"": ""fe08d8f5-8a0b-4948-b1db-4062eec5627e"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""JoinGame"",
+                    ""action"": ""RotateRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""ffdbd473-61f3-4fe7-beff-92ff40eebdcd"",
-                    ""path"": ""<Gamepad>/start"",
+                    ""id"": ""57300ed7-290f-4977-93ac-b68aafe9a05e"",
+                    ""path"": ""<Gamepad>/buttonEast"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""JoinGame"",
+                    ""action"": ""RotateRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""593adf44-8c76-4e3b-8cb6-41ed528d7a32"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""RotateLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""936a1c67-64b4-4601-a80e-10cf643950d1"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""RotateLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -198,7 +229,8 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
         m_Game_Move = m_Game.FindAction("Move", throwIfNotFound: true);
         m_Game_Jump = m_Game.FindAction("Jump", throwIfNotFound: true);
-        m_Game_JoinGame = m_Game.FindAction("JoinGame", throwIfNotFound: true);
+        m_Game_RotateRight = m_Game.FindAction("RotateRight", throwIfNotFound: true);
+        m_Game_RotateLeft = m_Game.FindAction("RotateLeft", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,14 +294,16 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IGameActions> m_GameActionsCallbackInterfaces = new List<IGameActions>();
     private readonly InputAction m_Game_Move;
     private readonly InputAction m_Game_Jump;
-    private readonly InputAction m_Game_JoinGame;
+    private readonly InputAction m_Game_RotateRight;
+    private readonly InputAction m_Game_RotateLeft;
     public struct GameActions
     {
         private @InputActions m_Wrapper;
         public GameActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Game_Move;
         public InputAction @Jump => m_Wrapper.m_Game_Jump;
-        public InputAction @JoinGame => m_Wrapper.m_Game_JoinGame;
+        public InputAction @RotateRight => m_Wrapper.m_Game_RotateRight;
+        public InputAction @RotateLeft => m_Wrapper.m_Game_RotateLeft;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -285,9 +319,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @JoinGame.started += instance.OnJoinGame;
-            @JoinGame.performed += instance.OnJoinGame;
-            @JoinGame.canceled += instance.OnJoinGame;
+            @RotateRight.started += instance.OnRotateRight;
+            @RotateRight.performed += instance.OnRotateRight;
+            @RotateRight.canceled += instance.OnRotateRight;
+            @RotateLeft.started += instance.OnRotateLeft;
+            @RotateLeft.performed += instance.OnRotateLeft;
+            @RotateLeft.canceled += instance.OnRotateLeft;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -298,9 +335,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @JoinGame.started -= instance.OnJoinGame;
-            @JoinGame.performed -= instance.OnJoinGame;
-            @JoinGame.canceled -= instance.OnJoinGame;
+            @RotateRight.started -= instance.OnRotateRight;
+            @RotateRight.performed -= instance.OnRotateRight;
+            @RotateRight.canceled -= instance.OnRotateRight;
+            @RotateLeft.started -= instance.OnRotateLeft;
+            @RotateLeft.performed -= instance.OnRotateLeft;
+            @RotateLeft.canceled -= instance.OnRotateLeft;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -340,6 +380,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnJoinGame(InputAction.CallbackContext context);
+        void OnRotateRight(InputAction.CallbackContext context);
+        void OnRotateLeft(InputAction.CallbackContext context);
     }
 }

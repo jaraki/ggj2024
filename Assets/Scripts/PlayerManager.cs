@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour
     private void Manager_onPlayerJoined(PlayerInput input) {
         var controller = input.GetComponent<PlayerController>();
         controller.Init(input);
+        input.transform.position = Vector3.up * 3.0f;
     }
 
     // Update is called once per frame

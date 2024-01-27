@@ -24,9 +24,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "JoinGame",
+                    "name": "RotateRight",
                     "type": "Button",
-                    "id": "71bb0fb2-ffa7-4ee8-b920-03870f23b9b6",
+                    "id": "17a14c9f-105d-42d8-8d3e-1063700785b5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RotateLeft",
+                    "type": "Button",
+                    "id": "fa0feeb7-fb4f-43b0-9a96-e2e26c7c8a83",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -124,23 +133,45 @@
                 },
                 {
                     "name": "",
-                    "id": "9334f50a-e352-451f-b8ee-2dba2cfb88bb",
-                    "path": "<Keyboard>/enter",
+                    "id": "fe08d8f5-8a0b-4948-b1db-4062eec5627e",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "JoinGame",
+                    "action": "RotateRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "ffdbd473-61f3-4fe7-beff-92ff40eebdcd",
-                    "path": "<Gamepad>/start",
+                    "id": "57300ed7-290f-4977-93ac-b68aafe9a05e",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "JoinGame",
+                    "action": "RotateRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "593adf44-8c76-4e3b-8cb6-41ed528d7a32",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "RotateLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "936a1c67-64b4-4601-a80e-10cf643950d1",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RotateLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
