@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
+    public const int MinPlayers = 4;
+    public PlayerManager PlayerManager;
     public int RoundTime;
     public int CountdownTime;
     public Slider Timer;
+    public TMP_Text WaitingText;
     public TMP_Text TimerText;
     public TMP_Text CountdownText;
     private double currentCountdown;
@@ -29,23 +32,30 @@ public class Game : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if(currentCountdown > 0) {
-            currentCountdown -= Time.deltaTime;
-            CountdownText.text = Math.Ceiling(currentCountdown).ToString();
-            var delta = Math.Ceiling(currentCountdown) - currentCountdown;
-            if(delta > 0 ) {
-                CountdownText.fontSize = (float)(originalFontSize / delta);
-            }
+        if(PlayerManager.NumPlayers < MinPlayers) {
+            int difference = MinPlayers - PlayerManager.NumPlayers;
+            WaitingText.text = $"Waiting for {difference} More Players...";
         } else {
-            if (Timer.value > 0) {
-                Timer.value -= Time.deltaTime;
-            }
+            WaitingText.text = "";
+            if (currentCountdown > 0) {
+                currentCountdown -= Time.deltaTime;
+                CountdownText.text = Math.Ceiling(currentCountdown).ToString();
+                var delta = Math.Ceiling(currentCountdown) - currentCountdown;
+                if (delta > 0) {
+                    CountdownText.fontSize = (float)(originalFontSize / delta);
+                }
+            } else {
+                if (Timer.value > 0) {
+                    Timer.value -= Time.deltaTime;
+                }
 
-            TimerText.text = Math.Ceiling(Timer.value).ToString();
-            if (Timer.value == 0) {
-                TimerText.text = "Time's Up!";
+                TimerText.text = Math.Ceiling(Timer.value).ToString();
+                if (Timer.value == 0) {
+                    TimerText.text = "Time's Up!";
+                }
             }
         }
+
 
     }
 }
