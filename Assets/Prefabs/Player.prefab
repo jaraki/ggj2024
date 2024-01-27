@@ -107,6 +107,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 97013a0b-cceb-415b-afce-9509708517cd
     m_ActionName: GAME/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 51577561-35a8-427f-95cf-2651ea955759
+    m_ActionName: Game/Jump[/Keyboard/space,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 71bb0fb2-ffa7-4ee8-b920-03870f23b9b6
+    m_ActionName: Game/JoinGame[/Keyboard/enter,/XInputControllerWindows/start]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Game
