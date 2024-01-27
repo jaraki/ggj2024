@@ -39,7 +39,9 @@ public class FillShape : MonoBehaviour {
                 }
             }
         }
-        text.text = $"{overlapArea / totalArea * 100.0f:0.0}%";
+        float percent = overlapArea / totalArea; // bounds kinda weird when rotating
+        percent = Mathf.Clamp01(percent);
+        text.text = $"{percent * 100.0f:0.0}%";
     }
 
     // Update is called once per frame

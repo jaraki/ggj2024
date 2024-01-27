@@ -15,24 +15,30 @@ public class PlayerShapes : MonoBehaviour {
     /// </summary>
     [SerializeField, HideInInspector]
     public int[] States = new int[GridSize * GridSize * NumStates];
-    
+
     public int[] GetState(int index) {
         return SubArray(States, index, GridSize * GridSize);
     }
 
     public static T[] SubArray<T>(T[] array, int offset, int length) {
         T[] result = new T[length];
-        Array.Copy(array, offset, result, 0, length);
+        Array.Copy(array, offset * length, result, 0, length);
         return result;
     }
 
     // Start is called before the first frame update
     void Start() {
+
+    }
+
+    public void Init(int mode) {
+        CurrentState = mode;
         int[] currentState = GetState(CurrentState);
         for (int j = 0; j < GridSize; ++j) {
             for (int i = 0; i < GridSize; ++i) {
                 if (currentState[j * GridSize + i] != 0) {
-                    var go = Instantiate(CellPrefab, new Vector3(j, GridSize - i, 0), Quaternion.identity, ModelParent);
+                    var go = Instantiate(CellPrefab, Vector3.zero, Quaternion.identity, ModelParent);
+                    go.transform.localPosition = new Vector3(j + 0.5f, GridSize - i - 0.5f, 0);
                     go.name = $"Cell ({j}, {i})";
                 }
             }

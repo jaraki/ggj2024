@@ -8,6 +8,8 @@ public class PlayerManager : MonoBehaviour
 
     PlayerInputManager manager;
 
+    int numPlayers = 0;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -18,6 +20,8 @@ public class PlayerManager : MonoBehaviour
 
     private void Manager_onPlayerJoined(PlayerInput input) {
         var controller = input.GetComponent<PlayerController>();
+        var shape = input.GetComponent<PlayerShapes>();
+        shape.Init(numPlayers++);
         controller.Init(input);
         input.transform.position = Vector3.up * 3.0f;
     }
