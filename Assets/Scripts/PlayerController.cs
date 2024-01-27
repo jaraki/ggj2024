@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour {
     //PlayerInput input;
     Rigidbody body;
     public Collider[] colliders { get; private set; }
+    RaycastHit[] hits = new RaycastHit[32];
 
     // Start is called before the first frame update
     void Awake() {
@@ -72,6 +73,16 @@ public class PlayerController : MonoBehaviour {
         vel.x = move.x;
         vel.z = move.y;
         body.velocity = vel;
+
+        grounded = false;
+        foreach(var c in colliders) {
+            int count = Physics.BoxCastNonAlloc(c.bounds.center, c.bounds.extents, Vector3.down, hits, Quaternion.identity, 1f, 1 << 6);
+            Debug.DrawLine(c.bounds.center, c.bounds.center + Vector3.down);
+            if(count > 0) {
+                grounded = true;
+                break;
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other) {
