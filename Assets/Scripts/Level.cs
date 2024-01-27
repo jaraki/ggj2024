@@ -6,7 +6,7 @@ using UnityEngine;
 public class Level : MonoBehaviour {
     public const int Size = 11;
     public GameObject CellPrefab;
-    [SerializeField]
+    [SerializeField, HideInInspector]
     public int[] Board = new int[Size * Size];
 
     /// <summary>
@@ -22,9 +22,9 @@ public class Level : MonoBehaviour {
     void Start() {
         for(int i = 0; i < Size; i++) {
             for(int j = 0;  j < Size; j++) {
-                if (Board[i * Size + j] != 0) {
-                    var go = Instantiate(CellPrefab, new Vector3(i, j, 0), Quaternion.identity, transform);
-                    go.name = $"Cell ({i}, ${j})";
+                if (Board[j * Size + i] != 0) {
+                    var go = Instantiate(CellPrefab, new Vector3(j, Size - i - 1, 0), Quaternion.identity, transform);
+                    go.name = $"Cell ({j}, {i})";
                 }
             }
         }
