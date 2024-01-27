@@ -10,31 +10,38 @@ public class PlayerController : MonoBehaviour {
 
     //PlayerInput input;
     Rigidbody body;
-    InputActions actions;
     public Collider[] colliders { get; private set; }
 
     // Start is called before the first frame update
     void Awake() {
         body = GetComponent<Rigidbody>();
         colliders = GetComponentsInChildren<Collider>();
-        //input = GetComponent<PlayerInput>();
-        // go click generate on the input actions asset then you get this nice class
-        actions = new InputActions();
-        actions.Enable();
-        //actions.Game.Move.performed += MoveAction_performed;
-
-        actions.Game.Jump.performed += Jump_performed;
-
     }
 
-    private void Jump_performed(InputAction.CallbackContext obj) {
-        Vector3 vel = body.velocity;
-        vel.y = jumpSpeed;
-        body.velocity = vel;
+    PlayerInput input;
+    public void Init(PlayerInput input) {
+        this.input = input;
+
+        input.actions["Jump"].performed += Jump;
+    }
+
+    float groundedLockout = 0.0f;
+    void Jump(InputAction.CallbackContext obj) {
+        if (grounded) {
+            Vector3 vel = body.velocity;
+            vel.y = jumpSpeed;
+            body.velocity = vel;
+        }
+        grounded = false;
+        groundedLockout = 0.1f;
     }
 
     void Update() {
-        var move = actions.Game.Move.ReadValue<Vector2>();
+        if (!input) {
+            return;
+        }
+        groundedLockout -= Time.deltaTime;
+        var move = input.actions["Move"].ReadValue<Vector2>();
         move *= speed;
         Vector3 vel = body.velocity;
         vel.x = move.x;
@@ -44,6 +51,13 @@ public class PlayerController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other) {
 
+    }
+
+    bool grounded = false;
+    private void OnCollisionStay(Collision collision) {
+        if (groundedLockout < 0.0f) {
+            grounded = true;
+        }
     }
 
     private void OnTriggerExit(Collider other) {
