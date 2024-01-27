@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,10 +7,10 @@ public class Game : MonoBehaviour {
     public int RoundTime;
     public int CountdownTime;
     public Slider Timer;
-    public Text TimerText;
-    public Text CountdownText;
+    public TMP_Text TimerText;
+    public TMP_Text CountdownText;
     private double currentCountdown;
-    private int originalFontSize;
+    private double originalFontSize;
     // Start is called before the first frame update
     void Start() {
         ResetTimer();
@@ -33,7 +32,10 @@ public class Game : MonoBehaviour {
         if(currentCountdown > 0) {
             currentCountdown -= Time.deltaTime;
             CountdownText.text = Math.Ceiling(currentCountdown).ToString();
-            CountdownText.fontSize = (int)(originalFontSize / (Math.Ceiling(currentCountdown) - currentCountdown));
+            var delta = Math.Ceiling(currentCountdown) - currentCountdown;
+            if(delta > 0 ) {
+                CountdownText.fontSize = (float)(originalFontSize / delta);
+            }
         } else {
             if (Timer.value > 0) {
                 Timer.value -= Time.deltaTime;
