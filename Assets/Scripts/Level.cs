@@ -23,7 +23,7 @@ public class Level : MonoBehaviour {
         for(int i = 0; i < Size; i++) {
             for(int j = 0;  j < Size; j++) {
                 if (Board[j * Size + i] != 0) {
-                    var go = Instantiate(CellPrefab, new Vector3(j, i, 0), Quaternion.identity, transform);
+                    var go = Instantiate(CellPrefab, new Vector3(j, Size - i - 1, 0), Quaternion.identity, transform);
                     go.name = $"Cell ({j}, {i})";
                 }
             }
