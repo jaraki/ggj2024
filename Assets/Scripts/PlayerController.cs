@@ -11,11 +11,12 @@ public class PlayerController : MonoBehaviour {
     //PlayerInput input;
     Rigidbody body;
     InputActions actions;
-
+    public Collider[] colliders { get; private set; }
 
     // Start is called before the first frame update
     void Awake() {
         body = GetComponent<Rigidbody>();
+        colliders = GetComponentsInChildren<Collider>();
         //input = GetComponent<PlayerInput>();
         // go click generate on the input actions asset then you get this nice class
         actions = new InputActions();
@@ -32,11 +33,6 @@ public class PlayerController : MonoBehaviour {
         body.velocity = vel;
     }
 
-    //private void MoveAction_performed(InputAction.CallbackContext obj) {
-    //    //var curMove = obj.ReadValue<Vector2>();
-    //    //Debug.Log(curMove);
-    //}
-
     void Update() {
         var move = actions.Game.Move.ReadValue<Vector2>();
         move *= speed;
@@ -44,6 +40,24 @@ public class PlayerController : MonoBehaviour {
         vel.x = move.x;
         vel.z = move.y;
         body.velocity = vel;
+    }
+
+    private void OnTriggerEnter(Collider other) {
+
+    }
+
+    private void OnTriggerExit(Collider other) {
+        var shape = other.transform.root.GetComponent<FillShape>();
+        if (shape) {
+            shape.RemovePlayer(this);
+        }
+    }
+
+    private void OnTriggerStay(Collider other) {
+        var shape = other.transform.root.GetComponent<FillShape>();
+        if (shape) {
+            shape.AddPlayer(this);
+        }
     }
 
 
