@@ -114,8 +114,8 @@ public class Game : MonoBehaviour {
         while (timer > 0) {
             CountdownText.text = Math.Ceiling(timer).ToString();
             var delta = Math.Ceiling(timer) - timer;
-            if(delta < 0.01f) {
-                delta = 0.01f;
+            if(delta < 0.25f) {
+                delta = 0.25f;
             }
             CountdownText.fontSize = (float)(originalFontSize / delta);
             timer -= Time.deltaTime * 2.0f;
