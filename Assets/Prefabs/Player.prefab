@@ -82,6 +82,9 @@ MonoBehaviour:
   - grunts:
     - {fileID: 8300000, guid: 8d3be791f519c8741b4a881d3d4ab004, type: 3}
     - {fileID: 8300000, guid: e17e497954989bb468661112d257184c, type: 3}
+    - {fileID: 8300000, guid: f60df5c25c9e86040a0c4634479cd8f5, type: 3}
+    - {fileID: 8300000, guid: 46b58dc2792d575448a8e93d3ae55ab7, type: 3}
+    - {fileID: 8300000, guid: 42a0707eea2328d40a85c4e5ec9527ac, type: 3}
   - grunts:
     - {fileID: 8300000, guid: 733f4cabb5a8ddb40b3ab43e477c25e3, type: 3}
     - {fileID: 8300000, guid: b0fc1b788888e47499da32bcf357d7ea, type: 3}
