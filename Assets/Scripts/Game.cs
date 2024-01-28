@@ -188,6 +188,7 @@ public class Game : MonoBehaviour {
         InGameMenu.SetActive(true);
         InGameMenuTitle.text = "You Win!";
         ResumeButton.SetActive(false);
+        EventSystem.SetSelectedGameObject(RestartButton);
     }
 
     IEnumerator GameOver(int index) {
@@ -204,7 +205,6 @@ public class Game : MonoBehaviour {
         if (GameOverSound && !GameOverSound.isPlaying) {
             GameOverSound.Play();
         }
-        // TODO: winning cutscene
         InGameMenu.SetActive(true);
         InGameMenuTitle.text = "Game Over!";
         ResumeButton.SetActive(false);

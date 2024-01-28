@@ -4295,11 +4295,6 @@ PrefabInstance:
       propertyPath: InGameMenuTitle
       value: 
       objectReference: {fileID: 584397824}
-    - target: {fileID: 9062771002429219274, guid: a486f8694a41a874780c19d31a0eac54,
-        type: 3}
-      propertyPath: EndingLines.Array.data[3]
-      value: Nobody ever finishes this one...such a shame.
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
