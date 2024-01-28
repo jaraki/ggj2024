@@ -82,6 +82,9 @@ public class PlayerController : MonoBehaviour {
         time = 0.0f;
         PlayRandomSound();
     }
+    public void ResetRot() {
+        targetRot = Quaternion.identity;
+    }
 
     float groundedLockout = 0.0f;
     void Jump(InputAction.CallbackContext obj) {

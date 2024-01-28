@@ -172,13 +172,14 @@ public class Game : MonoBehaviour {
         State = GameState.Waiting;
         level.gameObject.SetActive(false);
         CurrentLevelIndex++;
-        level = Levels[CurrentLevelIndex];
-        foreach (var img in level.fadeOutObjects) {
-            img.gameObject.SetActive(true);
-        }
         if (CurrentLevelIndex >= Levels.Length) {
             CurrentLevelIndex = 0;
             yield return StartCoroutine(WinGame());
+        } else {
+            level = Levels[CurrentLevelIndex];
+            foreach (var img in level.fadeOutObjects) {
+                img.gameObject.SetActive(true);
+            }
         }
         PlayerManager.SetFreeze(false);
         PlayerManager.ResetPlayerSpawns();
