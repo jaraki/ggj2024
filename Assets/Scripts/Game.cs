@@ -40,6 +40,7 @@ public class Game : MonoBehaviour {
     private double originalFontSize;
     public Animator KingAnim;
     public EventSystem EventSystem;
+    private GameState lastState = GameState.Started;
 
     // Start is called before the first frame update
     void Start() {
@@ -67,7 +68,7 @@ public class Game : MonoBehaviour {
 
     public void Resume() {
         Time.timeScale = 1f;
-        State = GameState.Started;
+        State = lastState;
         InGameMenu.SetActive(false);
     }
 
@@ -75,6 +76,7 @@ public class Game : MonoBehaviour {
         if (State == GameState.Paused) {
             Resume();
         } else {
+            lastState = State;
             State = GameState.Paused;
             Time.timeScale = 0f;
             InGameMenu.SetActive(true);
