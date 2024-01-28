@@ -26,28 +26,18 @@ public class Game : MonoBehaviour {
     public TMP_Text TimerText;
     public TMP_Text CountdownText;
     public TMP_Text FillText;
-    private double currentCountdown;
     private double originalFontSize;
 
     // Start is called before the first frame update
     void Start() {
-        ResetTimer();
-        ResetCountdown();
         originalFontSize = CountdownText.fontSize;
+        StartCoroutine(Countdown());
     }
 
     void SpawnLevel() {
         Levels[CurrentLevelIndex].Spawn();
     }
 
-    void ResetTimer() {
-        Timer.maxValue = Levels[CurrentLevelIndex].TimeLimit;
-        Timer.value = Levels[CurrentLevelIndex].TimeLimit;
-    }
-
-    void ResetCountdown() {
-        currentCountdown = CountdownTime;
-    }
 
     IEnumerator SpawnDialog(string text) {
         var go = Instantiate(DialogPrefab, FindAnyObjectByType<Canvas>().transform);
@@ -57,76 +47,82 @@ public class Game : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if(PlayerManager.NumPlayers < MinPlayers) {
+        if (PlayerManager.NumPlayers < MinPlayers) {
             int difference = MinPlayers - PlayerManager.NumPlayers;
             WaitingText.text = $"Waiting for {difference} More Players...";
             State = GameState.Waiting;
-        } else {
+        } else if (State == GameState.Started) {
             WaitingText.text = "";
 
-            if (currentCountdown > 0) {
-                if(State == GameState.Waiting) {
-                    State = GameState.Countdown;
-                    StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].OpeningLine));
-                }
-                
-                currentCountdown -= Time.deltaTime;
-                CountdownText.text = Math.Ceiling(currentCountdown).ToString();
-                var delta = Math.Ceiling(currentCountdown) - currentCountdown;
-                if (delta > 0) {
-                    CountdownText.fontSize = (float)(originalFontSize / delta);
-                }
-            } else {
-                if (State == GameState.Countdown) {
-                    SpawnLevel();
-                    State = GameState.Started;
-                }
-
-                var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
-                if (Timer.value > 0) {
-                    FillText.text = $"{overlap}%";
-                    Timer.value -= Time.deltaTime;
-                }
-                TimerText.text = Math.Ceiling(Timer.value).ToString();
-                if (Timer.value <= 0 || overlap == 100) {
-                    PlayerManager.SetFreeze(true);
-                    if (State == GameState.Started) {
-                        string closingLine = Levels[CurrentLevelIndex].ClosingLine;
-                        if (overlap >= 0.76) {
-                            StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[0], closingLine));
-                        } else if (overlap >= 0.51) {
-                            StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[1], closingLine));
-                        } else if (overlap >= 0.26) {
-                            StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[2], closingLine));
-                        } else {
-                            StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[3], closingLine));
-                        }
-                        
+            var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
+            if (overlap >= 99) {
+                overlap = 100;
+            }
+            if (Timer.value > 0) {
+                FillText.text = $"{overlap}%";
+                Timer.value -= Time.deltaTime;
+            }
+            TimerText.text = Math.Ceiling(Timer.value).ToString();
+            if (Timer.value <= 0 || overlap == 100) {
+                Timer.value = 0;
+                PlayerManager.SetFreeze(true);
+                if (State == GameState.Started) {
+                    string closingLine = Levels[CurrentLevelIndex].ClosingLine;
+                    int line;
+                    if (overlap >= 0.76) {
+                        line = 0;
+                    } else if (overlap >= 0.51) {
+                        line = 1;
+                    } else if (overlap >= 0.26) {
+                        line = 2;
+                    } else {
+                        line = 3;
                     }
-                    TimerText.text = "Time's Up!";
-                    State = GameState.Ended;
+                    StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[line], closingLine));
                 }
+                TimerText.text = "Time's Up!";
+                State = GameState.Ended;
             }
         }
+    }
 
-        IEnumerator StartNextLevel(string endingLine, string closingLine) {
-            yield return StartCoroutine(SpawnDialog(endingLine));
-            yield return StartCoroutine(SpawnDialog(closingLine));            
-            State = GameState.Waiting;
-            ResetTimer();
-            ResetCountdown();
-            Levels[CurrentLevelIndex].gameObject.SetActive(false);
-            CurrentLevelIndex++;
-            if (CurrentLevelIndex >= Levels.Length) {
-                CurrentLevelIndex = 0;
-                SpawnDialog(winningDialog);
-                yield return new WaitForSeconds(3);
-            }
-            // toggle on anything
-            foreach(var toggle in Levels[CurrentLevelIndex].toggleActive) {
-                toggle.SetActive(!toggle.activeInHierarchy);
-            }
-            PlayerManager.ResetPlayerSpawns();
+    IEnumerator StartNextLevel(string endingLine, string closingLine) {
+        yield return StartCoroutine(SpawnDialog(endingLine));
+        yield return StartCoroutine(SpawnDialog(closingLine));
+        State = GameState.Waiting;
+        Levels[CurrentLevelIndex].gameObject.SetActive(false);
+        CurrentLevelIndex++;
+        if (CurrentLevelIndex >= Levels.Length) {
+            CurrentLevelIndex = 0;
+            yield return StartCoroutine(SpawnDialog(winningDialog));
+            // todo: load winning scene
         }
+        // toggle on anything
+        foreach (var toggle in Levels[CurrentLevelIndex].toggleActive) {
+            toggle.SetActive(!toggle.activeInHierarchy);
+        }
+        PlayerManager.SetFreeze(false);
+        PlayerManager.ResetPlayerSpawns();
+        StartCoroutine(Countdown());
+    }
+
+    IEnumerator Countdown() {
+        Timer.maxValue = Levels[CurrentLevelIndex].TimeLimit;
+        Timer.value = Levels[CurrentLevelIndex].TimeLimit;
+        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].OpeningLine));
+        float timer = CountdownTime;
+        while (timer > 0) {
+            CountdownText.text = Math.Ceiling(timer).ToString();
+            var delta = Math.Ceiling(timer) - timer;
+            if(delta < 0.01f) {
+                delta = 0.01f;
+            }
+            CountdownText.fontSize = (float)(originalFontSize / delta);
+            timer -= Time.deltaTime * 2.0f;
+            yield return null;
+        }
+        CountdownText.text = "";
+        SpawnLevel();
+        State = GameState.Started;
     }
 }

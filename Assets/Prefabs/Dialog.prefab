@@ -397,4 +397,4 @@ MonoBehaviour:
   TitleText: {fileID: 3452126516651054655}
   LineText: {fileID: 5148140552568010662}
   LettersPerSecond: 20
-  DeletionDelay: 1
+  DeletionDelay: 0
