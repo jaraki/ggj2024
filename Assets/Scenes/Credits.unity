@@ -860,8 +860,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Credits\n\nProgrammers\nJeffrey Araki\nJohn Francis Collins III (Bucky)\n\nArtists\nGabriel
-    Conway-Burt\n\nSound\nSidney Dubord\nJimmy Johnston\n\nProducer\nDylan Sands\n\nVoice
+  m_text: "Credits\n\nProgramming, Level Design\nJeffrey Araki\nJohn Francis Collins
+    III (Bucky)\n\n3D Art, Animation\nGabriel Conway-Burt\n\nMusic, Sound\nSidney
+    Dubord\nJimmy Johnston\n\nNarrative Design, Production\nDylan Sands\n\nVoice
     Acting\nIsabel Veliz\nMar\xEDa Sol\xF3rzano\nDylan Sands\nJohn Francis Collins
     III (Bucky)"
   m_isRightToLeft: 0
