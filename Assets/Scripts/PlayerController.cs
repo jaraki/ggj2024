@@ -37,19 +37,19 @@ public class PlayerController : MonoBehaviour {
 
         colliders = GetComponentsInChildren<Collider>();
 
-        // center player colliders around their center
-        Vector3 averageOffset = Vector3.zero;
-        int count = 0;
-        foreach(var c in colliders) {
-            averageOffset += c.transform.localPosition;
-            count++;
-        }
-        if (count > 0) {
-            averageOffset /= count;
-            foreach (var c in colliders) {
-                c.transform.localPosition = c.transform.localPosition - averageOffset;
-            }
-        }
+        //// center player colliders around their center
+        //Vector3 averageOffset = Vector3.zero;
+        //int count = 0;
+        //foreach(var c in colliders) {
+        //    averageOffset += c.transform.localPosition;
+        //    count++;
+        //}
+        //if (count > 0) {
+        //    averageOffset /= count;
+        //    foreach (var c in colliders) {
+        //        c.transform.localPosition = c.transform.localPosition - averageOffset;
+        //    }
+        //}
     }
 
     void PlayRandomSound() {

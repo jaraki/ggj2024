@@ -31,7 +31,13 @@ public class PlayerShapes : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        
+    }
 
+    public void InitModel(int playerIndex, int layer) {
+        var go = Instantiate(ModelPrefabs[playerIndex], Vector3.zero, Quaternion.identity, ModelParent);
+        go.transform.localPosition = Vector3.zero;
+        go.layer = layer;
     }
 
     public void Init(int playerIndex, int layer, Material mat) {
@@ -50,6 +56,10 @@ public class PlayerShapes : MonoBehaviour {
         foreach(var rend in rends) {
             rend.material = mat;
         }
+    }
+
+    void SpawnCubes() {
+
     }
 
     // Update is called once per frame
