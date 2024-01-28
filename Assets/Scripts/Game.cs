@@ -167,10 +167,10 @@ public class Game : MonoBehaviour {
             foreach (var img in level.fadeOutObjects) {
                 img.gameObject.SetActive(true);
             }
+            PlayerManager.SetFreeze(false);
+            PlayerManager.ResetPlayerSpawns();
+            StartCoroutine(Countdown());
         }
-        PlayerManager.SetFreeze(false);
-        PlayerManager.ResetPlayerSpawns();
-        StartCoroutine(Countdown());
     }
 
     IEnumerator WinGame() {
