@@ -343,12 +343,6 @@ AudioSource:
     type: 3}
   m_PrefabInstance: {fileID: 152145888}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &152145893 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 6778650760244201060, guid: 17828db72f8a603468508e6770ae977a,
-    type: 3}
-  m_PrefabInstance: {fileID: 152145888}
-  m_PrefabAsset: {fileID: 0}
 --- !u!82 &152145894 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 6064521615350833445, guid: 17828db72f8a603468508e6770ae977a,
@@ -1281,6 +1275,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &1196058623 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6743609269127444857, guid: 17828db72f8a603468508e6770ae977a,
+    type: 3}
+  m_PrefabInstance: {fileID: 152145888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1235522642 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7508987699803368617, guid: 90ff5deffa72ffe4a93b6c3671a994f0,
@@ -1463,6 +1463,7 @@ MonoBehaviour:
   DialogPrefab: {fileID: 8358398930819588280, guid: d01f82862fca5cc4b9acd5508c7f8e5e,
     type: 3}
   GameOverSound: {fileID: 118552099}
+  Music: {fileID: 891700133}
   Levels:
   - {fileID: 547072314}
   - {fileID: 1235522642}
@@ -1797,7 +1798,7 @@ PrefabInstance:
         type: 3}
       propertyPath: OpeningAudio
       value: 
-      objectReference: {fileID: 152145893}
+      objectReference: {fileID: 1196058623}
     - target: {fileID: 401911468201264636, guid: 90ff5deffa72ffe4a93b6c3671a994f0,
         type: 3}
       propertyPath: EndingAudio.Array.data[0]

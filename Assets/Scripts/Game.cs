@@ -40,10 +40,10 @@ public class Game : MonoBehaviour {
     }
 
 
-    IEnumerator SpawnDialog(string text) {
+    IEnumerator SpawnDialog(string text, float duration) {
         var go = Instantiate(DialogPrefab, FindAnyObjectByType<Canvas>().transform);
         var dialog = go.GetComponent<Dialog>();
-        yield return dialog.SetLine(text);
+        yield return dialog.SetLine(text, duration);
     }
 
     // Update is called once per frame
@@ -92,15 +92,15 @@ public class Game : MonoBehaviour {
 
     IEnumerator StartNextLevel(int endingLineIndex, string closingLine) {
         Levels[CurrentLevelIndex].EndingAudio[endingLineIndex].Play();
-        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].EndingLines[endingLineIndex]));
+        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].EndingLines[endingLineIndex], Levels[CurrentLevelIndex].EndingAudio[endingLineIndex].clip.length));
         Levels[CurrentLevelIndex].ClosingAudio.Play();
-        yield return StartCoroutine(SpawnDialog(closingLine));
+        yield return StartCoroutine(SpawnDialog(closingLine, Levels[CurrentLevelIndex].ClosingAudio.clip.length));
         State = GameState.Waiting;
         Levels[CurrentLevelIndex].gameObject.SetActive(false);
         CurrentLevelIndex++;
         if (CurrentLevelIndex >= Levels.Length) {
             CurrentLevelIndex = 0;
-            yield return StartCoroutine(SpawnDialog(winningDialog));
+            yield return StartCoroutine(SpawnDialog(winningDialog, 3));
             // todo: load winning scene
         }
         // toggle on anything
@@ -116,7 +116,7 @@ public class Game : MonoBehaviour {
         Timer.maxValue = Levels[CurrentLevelIndex].TimeLimit;
         Timer.value = Levels[CurrentLevelIndex].TimeLimit;
         Levels[CurrentLevelIndex].OpeningAudio.Play();
-        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].OpeningLine));
+        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].OpeningLine, Levels[CurrentLevelIndex].OpeningAudio.clip.length));
         float timer = CountdownTime;
         while (timer > 0) {
             CountdownText.text = Math.Ceiling(timer).ToString();
