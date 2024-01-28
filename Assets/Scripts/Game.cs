@@ -8,10 +8,12 @@ public enum GameState {
     Waiting,
     Countdown,
     Started,
+    Paused,
     Ended,
 }
 
 public class Game : MonoBehaviour {
+    public GameObject InGameMenu;
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
     public AudioSource Music;
@@ -34,6 +36,7 @@ public class Game : MonoBehaviour {
         originalFontSize = CountdownText.fontSize;
         StartCoroutine(Countdown());
         Timer.gameObject.SetActive(false);
+        InGameMenu.SetActive(false);
     }
 
     void SpawnLevel() {
@@ -46,8 +49,25 @@ public class Game : MonoBehaviour {
         yield return dialog.SetLine(text, duration);
     }
 
+    public void Resume() {
+        Time.timeScale = 1f;
+        State = GameState.Started;
+        InGameMenu.SetActive(false);
+    }
+
     // Update is called once per frame
     void Update() {
+        if(Input.GetKeyDown(KeyCode.Escape)) {
+            if(State == GameState.Paused) {
+                Resume();
+            } else {
+                if(State == GameState.Started) {
+                    State = GameState.Paused;
+                    Time.timeScale = 0f;
+                    InGameMenu.SetActive(true);
+                }
+            }
+        }
         if (PlayerManager.NumPlayers < MinPlayers) {
             int difference = MinPlayers - PlayerManager.NumPlayers;
             WaitingText.text = $"Waiting for {difference} More Players...";
@@ -107,12 +127,17 @@ public class Game : MonoBehaviour {
         }
         if (CurrentLevelIndex >= Levels.Length) {
             CurrentLevelIndex = 0;
-            yield return StartCoroutine(SpawnDialog(winningDialog, 3));
-            // todo: load winning scene
+            yield return StartCoroutine(WinGame());
         }
         PlayerManager.SetFreeze(false);
         PlayerManager.ResetPlayerSpawns();
         StartCoroutine(Countdown());
+    }
+
+    IEnumerator WinGame() {
+        yield return StartCoroutine(SpawnDialog(winningDialog, 3));
+        // TODO: winning cutscene
+        CountdownText.text = "You Win!";
     }
 
     IEnumerator Countdown() {

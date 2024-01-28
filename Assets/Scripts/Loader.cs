@@ -17,14 +17,17 @@ public class Loader : MonoBehaviour {
 
     public void LoadMain() {
         SceneManager.LoadScene("Main");
+        Time.timeScale = 1.0f;
     }
 
     public void LoadCredits() {
         SceneManager.LoadScene("Credits");
+        Time.timeScale = 1.0f;
     }
 
     public void LoadMenu() {
         SceneManager.LoadScene("Menu");
+        Time.timeScale = 1.0f;
     }
 
     public void Quit() {
