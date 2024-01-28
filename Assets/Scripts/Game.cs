@@ -189,9 +189,14 @@ public class Game : MonoBehaviour {
         }
         // TODO: winning cutscene
         InGameMenu.SetActive(true);
-        InGameMenuTitle.text = "You Win!";
+        InGameMenuTitle.text = "You  Win!";
         ResumeButton.SetActive(false);
         EventSystem.SetSelectedGameObject(RestartButton);
+        KingAnim.SetBool("Dancing", true);
+        KingAnim.transform.root.position = new Vector3(0.0f, 1.38f, 7.6f);
+        yield return new WaitForSeconds(8.0F);
+        LoopMusic.pitch = 0.8f;
+        LoopMusic.Play();
     }
 
     IEnumerator GameOver(int index) {

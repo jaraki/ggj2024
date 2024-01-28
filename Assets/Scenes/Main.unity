@@ -4197,14 +4197,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4585037127724385070, guid: a486f8694a41a874780c19d31a0eac54,
         type: 3}
-      propertyPath: OpeningLine
-      value: "Tonight shall be a grand evening of BUFFOONERY, and nothing less. Do
-        your best to entertain me, and I\u2019ll think about letting you live. If
-        I don\u2019t find you as fun as torturing my subjects I\u2019ll have you
-        sent TO THE DUNGEON. "
-      objectReference: {fileID: 0}
-    - target: {fileID: 4585037127724385070, guid: a486f8694a41a874780c19d31a0eac54,
-        type: 3}
       propertyPath: fadeOutObjects.Array.data[0]
       value: 
       objectReference: {fileID: 8177326698373801799}
@@ -4595,12 +4587,12 @@ PrefabInstance:
     - target: {fileID: 5346467655102646917, guid: 9a3572353cd59994e8831d9cd6a98d2b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.602
+      value: 1.38
       objectReference: {fileID: 0}
     - target: {fileID: 5346467655102646917, guid: 9a3572353cd59994e8831d9cd6a98d2b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.4
+      value: 7.61
       objectReference: {fileID: 0}
     - target: {fileID: 5346467655102646917, guid: 9a3572353cd59994e8831d9cd6a98d2b,
         type: 3}

@@ -261,6 +261,12 @@ MonoBehaviour:
   VictorySound: {fileID: 1238755382571629646}
   Levels:
   - {fileID: 4585037127724385070}
+  - {fileID: 388240974928473353}
+  - {fileID: 469391101670470203}
+  - {fileID: 5118104457962278847}
+  - {fileID: 866362532234237591}
+  - {fileID: 242799049003299547}
+  - {fileID: 9062771002429219274}
   winningDialog: Well done, now you can die anyways!
   State: 0
   CurrentLevelIndex: 0
@@ -624,8 +630,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ec1fb10e01109459933b862c687d8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OpeningLine: 'Remember, your insignificant lives are in my hands. MOVE to the target!  '
-  TimeLimit: 30
+  OpeningLine: "Tonight shall be a grand evening of BUFFOONERY, and nothing less.
+    Do your best to entertain me, and I\u2019ll think about letting you live. If
+    I don\u2019t find you as fun as torturing my subjects I\u2019ll have you sent
+    TO THE DUNGEON.  Now dance for me!"
+  TimeLimit: 5
   EndingLines:
   - 'Well done, fools. I expected as much. '
   - Acceptable. I shall allow it.
