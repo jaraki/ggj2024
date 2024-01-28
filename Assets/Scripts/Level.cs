@@ -4,9 +4,11 @@ using UnityEngine;
 
 [System.Serializable]
 public class Level : MonoBehaviour {
+    public string OpeningLine;
+    public string[] EndingLines = new string[5];
     public const int Size = 11;
     public GameObject CellPrefab;
-    [SerializeField, HideInInspector]
+    [HideInInspector]
     public int[] Board = new int[Size * Size];
 
     // Start is called before the first frame update

@@ -11,7 +11,9 @@ public enum GameState {
 }
 
 public class Game : MonoBehaviour {
-    public const int MinPlayers = 1;
+    public AudioSource GameOverSound;
+    public Level[] Levels;
+    public const int MinPlayers = 4;
     public GameState State;
     public PlayerManager PlayerManager;
     public int RoundTime;
