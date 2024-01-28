@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Net.Http.Headers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,8 +21,10 @@ public class Game : MonoBehaviour {
     public GameObject InGameMenu;
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
-    public AudioSource Music;
+    public AudioSource Music; // one at the end
     public AudioSource LoopMusic;
+    public AudioSource CountdownSound;
+    public AudioSource VictorySound;
     public Level[] Levels;
     public string winningDialog = "Well done, now you can die anyways!";
     public const int MinPlayers = 4;
@@ -39,6 +40,7 @@ public class Game : MonoBehaviour {
     private double originalFontSize;
     public Animator KingAnim;
     public EventSystem EventSystem;
+    private GameState lastState = GameState.Started;
 
     // Start is called before the first frame update
     void Start() {
@@ -47,12 +49,9 @@ public class Game : MonoBehaviour {
         Timer.gameObject.SetActive(false);
         InGameMenu.SetActive(false);
 
-        InputActions act = new InputActions();
+        InputActions act = new();
         act.Game.Enable();
         act.Game.Pause.performed += PauseAction;
-
-        //pauseAction.action.performed += PauseAction;
-        //pauseAction.action.Enable();
     }
 
     void SpawnLevel() {
@@ -69,7 +68,7 @@ public class Game : MonoBehaviour {
 
     public void Resume() {
         Time.timeScale = 1f;
-        State = GameState.Started;
+        State = lastState;
         InGameMenu.SetActive(false);
     }
 
@@ -77,29 +76,16 @@ public class Game : MonoBehaviour {
         if (State == GameState.Paused) {
             Resume();
         } else {
-            if (State == GameState.Started) {
-                State = GameState.Paused;
-                Time.timeScale = 0f;
-                InGameMenu.SetActive(true);
-                ResumeButton.SetActive(true);
-            }
+            lastState = State;
+            State = GameState.Paused;
+            Time.timeScale = 0f;
+            InGameMenu.SetActive(true);
+            ResumeButton.SetActive(true);
         }
     }
 
     // Update is called once per frame
     void Update() {
-        //if(Input.GetKeyDown(KeyCode.Escape)) {
-        //    if(State == GameState.Paused) {
-        //        Resume();
-        //    } else {
-        //        if(State == GameState.Started) {
-        //            State = GameState.Paused;
-        //            Time.timeScale = 0f;
-        //            InGameMenu.SetActive(true);
-        //            ResumeButton.SetActive(true);
-        //        }
-        //    }
-        //}
         if (PlayerManager.NumPlayers < MinPlayers) {
             int difference = MinPlayers - PlayerManager.NumPlayers;
             WaitingText.text = $"Waiting for {difference} More Players...";
@@ -118,17 +104,20 @@ public class Game : MonoBehaviour {
                 Timer.value -= Time.deltaTime;
             }
             if (Timer.value <= Music.clip.length) {
-                if (LoopMusic && LoopMusic.isPlaying) {
-                    LoopMusic.Stop();
-                }
-                if (Music && !Music.isPlaying) {
-                    Music.Play();
-                }
+                //if (LoopMusic && LoopMusic.isPlaying) {
+                //    LoopMusic.Stop();
+                //}
+                //if (Music && !Music.isPlaying) {
+                //    Music.Play();
+                //}
             }
             TimerText.text = Math.Ceiling(Timer.value).ToString();
             if (Timer.value <= 0 || overlap == 100) {
-                if (Music && Music.isPlaying) {
-                    Music.Stop();
+                //if (Music && Music.isPlaying) {
+                //    Music.Stop();
+                //}
+                if (LoopMusic && LoopMusic.isPlaying) {
+                    LoopMusic.Stop();
                 }
                 PlayerManager.SetFreeze(true);
                 if (State == GameState.Started) {
@@ -149,7 +138,7 @@ public class Game : MonoBehaviour {
                     if (index < 3) {
                         StartCoroutine(StartNextLevel(index, closingLine));
                     } else {
-                        StartCoroutine(GameOver(closingLine));
+                        StartCoroutine(GameOver(index));
                     }
                 }
                 TimerText.text = "Time's Up!";
@@ -167,13 +156,14 @@ public class Game : MonoBehaviour {
         State = GameState.Waiting;
         level.gameObject.SetActive(false);
         CurrentLevelIndex++;
-        level = Levels[CurrentLevelIndex];
-        foreach (var img in level.fadeOutObjects) {
-            img.gameObject.SetActive(true);
-        }
         if (CurrentLevelIndex >= Levels.Length) {
             CurrentLevelIndex = 0;
             yield return StartCoroutine(WinGame());
+        } else {
+            level = Levels[CurrentLevelIndex];
+            foreach (var img in level.fadeOutObjects) {
+                img.gameObject.SetActive(true);
+            }
         }
         PlayerManager.SetFreeze(false);
         PlayerManager.ResetPlayerSpawns();
@@ -184,16 +174,29 @@ public class Game : MonoBehaviour {
         float duration = 3;
         yield return StartCoroutine(SpawnDialog(winningDialog, duration));
         yield return new WaitForSeconds(duration);
+        if (VictorySound && !VictorySound.isPlaying) {
+            VictorySound.Play();
+        }
         // TODO: winning cutscene
         InGameMenu.SetActive(true);
         InGameMenuTitle.text = "You Win!";
         ResumeButton.SetActive(false);
     }
 
-    IEnumerator GameOver(string dialog) {
-        float duration = 3;
-        yield return StartCoroutine(SpawnDialog(dialog, duration));
-        yield return new WaitForSeconds(duration);
+    IEnumerator GameOver(int index) {
+        var level = Levels[CurrentLevelIndex];
+        string endingLine = level.EndingLines[index];
+        string closingLine = level.ClosingLine;
+        level.EndingAudio[index].Play();
+        float endingDuration = level.EndingAudio[index].clip.length;
+        yield return StartCoroutine(SpawnDialog(endingLine, endingDuration));
+        level.ClosingAudio.Play();
+        float closingDuration = level.ClosingAudio.clip.length;
+        yield return StartCoroutine(SpawnDialog(closingLine, closingDuration));
+        yield return new WaitForSeconds(3);
+        if (GameOverSound && !GameOverSound.isPlaying) {
+            GameOverSound.Play();
+        }
         // TODO: winning cutscene
         InGameMenu.SetActive(true);
         InGameMenuTitle.text = "Game Over!";
@@ -211,6 +214,9 @@ public class Game : MonoBehaviour {
             yield return StartCoroutine(SpawnDialog(level.OpeningLine, level.OpeningAudio.clip.length));
         }
         float timer = CountdownTime;
+        if (CountdownSound && !CountdownSound.isPlaying) {
+            CountdownSound.Play();
+        }
         while (timer > 0) {
             CountdownText.text = Math.Ceiling(timer).ToString();
             var delta = Math.Ceiling(timer) - timer;

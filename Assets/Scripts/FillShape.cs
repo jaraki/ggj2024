@@ -20,6 +20,9 @@ public class FillShape : MonoBehaviour {
     public float CalculateOverlap() {
         float overlapArea = 0.0f;
         foreach (var p in collidingPlayers) {
+            if (p.rotating) {
+                continue;
+            }
             foreach (var c in p.colliders) {
                 foreach (var mc in Colliders) {
                     var a = c.bounds;

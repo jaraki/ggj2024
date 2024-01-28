@@ -63,20 +63,21 @@ public class PlayerManager : MonoBehaviour {
         //shape.Init(NumPlayers, layer, playerMats[NumPlayers]);
         shape.InitModel(NumPlayers, layer);
         controller.Init(NumPlayers, input, layer);
-        SetSpawn(input.transform, NumPlayers);
+        SetSpawn(controller, NumPlayers);
         players.Add(controller);
         NumPlayers++;
     }
 
-    void SetSpawn(Transform player, int index) {
+    void SetSpawn(PlayerController player, int index) {
         if (index >= 0 && index < spawns.Length) {
-            player.position = spawns[index].position + Vector3.up * 3.0f;
+            player.transform.position = spawns[index].position + Vector3.up * 3.0f;
         }
+        player.ResetRot();
     }
 
     public void ResetPlayerSpawns() {
         for (int i = 0; i < players.Count; ++i) {
-            SetSpawn(players[i].transform, i);
+            SetSpawn(players[i], i);
         }
     }
 

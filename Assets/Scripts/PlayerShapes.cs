@@ -58,14 +58,6 @@ public class PlayerShapes : MonoBehaviour {
         }
     }
 
-    void SpawnCubes() {
-
-    }
-
-    // Update is called once per frame
-    void Update() {
-
-    }
 }
 
 
