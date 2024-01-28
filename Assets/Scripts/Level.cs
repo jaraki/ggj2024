@@ -18,6 +18,8 @@ public class Level : MonoBehaviour {
     public AudioSource OpeningAudio;
     public AudioSource[] EndingAudio;
     public AudioSource ClosingAudio;
+    public bool InvertedControls = false;
+    public float passPercentage = 0.25f;
 
     public void Spawn() {
         for (int i = 0; i < Size; i++) {

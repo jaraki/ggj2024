@@ -261,10 +261,6 @@ MonoBehaviour:
   VictorySound: {fileID: 1238755382571629646}
   Levels:
   - {fileID: 4585037127724385070}
-  - {fileID: 388240974928473353}
-  - {fileID: 469391101670470203}
-  - {fileID: 5118104457962278847}
-  - {fileID: 866362532234237591}
   winningDialog: Well done, now you can die anyways!
   State: 0
   CurrentLevelIndex: 0
@@ -323,6 +319,8 @@ Transform:
   - {fileID: 4344955675475894353}
   - {fileID: 4376890857052279044}
   - {fileID: 81477560675172383}
+  - {fileID: 8693800141162463319}
+  - {fileID: 2504165378251159991}
   m_Father: {fileID: 413551003245657604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1216200919509672736
@@ -651,6 +649,8 @@ MonoBehaviour:
   - {fileID: 4920436407684582165}
   - {fileID: 200647868217846107}
   ClosingAudio: {fileID: 9003320513562381060}
+  InvertedControls: 0
+  passPercentage: 0
 --- !u!114 &8447547699926978666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1733,13 +1733,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ec1fb10e01109459933b862c687d8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OpeningLine: ' Now STACK, peons! '
+  OpeningLine: ' Now STACK for me, peons! '
   TimeLimit: 60
   EndingLines:
-  - 'yes, Yes, YES! I want MORE! '
-  - 'mmmhm perhaps '
+  - yes!
   - "I saw that. I may be mad but you can\u2019t fool me. "
-  - Unacceptable! I'll have you executed if you keep this up.
+  - This is your last chance you pig-headed simpleton.
+  - Unacceptable! Guards, send them TO THE DUNGEON!
   ClosingLine: "Your courage is admirable. But don\u2019t let your hubris get the
     best of you."
   CellPrefab: {fileID: 7746706810666841091, guid: 04d8e7bd59cfc9d428350d00586d6313,
@@ -1754,6 +1754,8 @@ MonoBehaviour:
   - {fileID: 4920436407684582165}
   - {fileID: 200647868217846107}
   ClosingAudio: {fileID: 2315170446627195771}
+  InvertedControls: 0
+  passPercentage: 0.25
 --- !u!114 &922771021652865786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1761,6 +1763,86 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5421089496282008807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f051e89587fadb543bf85d531c4538c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collidingPlayers: []
+--- !u!1 &6471127728893593626
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8693800141162463319}
+  - component: {fileID: 242799049003299547}
+  - component: {fileID: 1722384144230740371}
+  m_Layer: 0
+  m_Name: Level 6
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8693800141162463319
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6471127728893593626}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3653019183827401472}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &242799049003299547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6471127728893593626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ec1fb10e01109459933b862c687d8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OpeningLine: There is no hope for you now, peasants!
+  TimeLimit: 60
+  EndingLines:
+  - You've pleased King Isos. Butler! Bring this polygon a cookie!
+  - Buffoonery!
+  - Losers
+  - Well you tried your best. But you didn't succeed.
+  ClosingLine: Last chance, peasants.
+  CellPrefab: {fileID: 7746706810666841091, guid: 04d8e7bd59cfc9d428350d00586d6313,
+    type: 3}
+  FillShape: {fileID: 1722384144230740371}
+  Board: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000001000000010000000100000001000000010000000000000000000000000000000000000000000000000000000100000001000000000000000000000000000000000000000000000000000000000000000000000001000000010000000100000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000010000000100000000000000010000000000000000000000000000000000000000000000000000000000000001000000010000000100000001000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  fadeOutObjects: []
+  OpeningAudio: {fileID: 8272831564816943044}
+  EndingAudio:
+  - {fileID: 2669934428723190259}
+  - {fileID: 1696720036906456392}
+  - {fileID: 4920436407684582165}
+  - {fileID: 200647868217846107}
+  ClosingAudio: {fileID: 4469379199846792624}
+  InvertedControls: 0
+  passPercentage: 0.75
+--- !u!114 &1722384144230740371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6471127728893593626}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f051e89587fadb543bf85d531c4538c1, type: 3}
@@ -1976,6 +2058,87 @@ Transform:
   - {fileID: 1598101115791052505}
   m_Father: {fileID: 413551003245657604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7239990709317144934
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2504165378251159991}
+  - component: {fileID: 9062771002429219274}
+  - component: {fileID: 7948541404551321716}
+  m_Layer: 0
+  m_Name: Level 7
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2504165378251159991
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7239990709317144934}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3653019183827401472}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9062771002429219274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7239990709317144934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32ec1fb10e01109459933b862c687d8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OpeningLine: No more playing games. It's time for your final exam. Let's shake
+    things up a bit, shall we?
+  TimeLimit: 60
+  EndingLines:
+  - 'Gah! I could kiss you. '
+  - ' I might promote you to my personal jesters at this rate! '
+  - A valiant effort, I suppose.
+  - Nobody ever finishes this one...such a shame.
+  ClosingLine: Time's up! I've come to a decision.
+  CellPrefab: {fileID: 7746706810666841091, guid: 04d8e7bd59cfc9d428350d00586d6313,
+    type: 3}
+  FillShape: {fileID: 7948541404551321716}
+  Board: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000010000000000000000000000000000000000000000000000000000000000000000000000000000000100000001000000010000000000000000000000000000000000000000000000000000000000000001000000010000000100000001000000000000000000000000000000000000000000000000000000000000000100000000000000000000000100000000000000010000000000000000000000000000000000000001000000010000000000000000000000010000000100000001000000010000000000000000000000000000000000000000000000000000000000000000000000000000000100000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  fadeOutObjects: []
+  OpeningAudio: {fileID: 8272831564816943044}
+  EndingAudio:
+  - {fileID: 2669934428723190259}
+  - {fileID: 1696720036906456392}
+  - {fileID: 4920436407684582165}
+  - {fileID: 200647868217846107}
+  ClosingAudio: {fileID: 4469379199846792624}
+  InvertedControls: 1
+  passPercentage: 0.75
+--- !u!114 &7948541404551321716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7239990709317144934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f051e89587fadb543bf85d531c4538c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collidingPlayers: []
 --- !u!1 &7409114823779601565
 GameObject:
   m_ObjectHideFlags: 0
@@ -2533,15 +2696,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ec1fb10e01109459933b862c687d8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OpeningLine: " Well, well, well\u2026 Only an elite few have managed to make it
-    this far. You must be some sort of special fools."
+  OpeningLine: " Well, well, well\u2026 You must be some sort of special fools."
   TimeLimit: 90
   EndingLines:
   - "You..my good BUFFOONS\u2026are peerless."
   - ' I might promote you to my personal jesters at this rate! '
   - You Pass. Barely...
   - Unacceptable! Guards, send them TO THE DUNGEON!
-  ClosingLine: Time's up! I've come to a decision.
+  ClosingLine: Now let us truly test your mettle!
   CellPrefab: {fileID: 7746706810666841091, guid: 04d8e7bd59cfc9d428350d00586d6313,
     type: 3}
   FillShape: {fileID: 1051374290511554541}
@@ -2554,6 +2716,8 @@ MonoBehaviour:
   - {fileID: 4920436407684582165}
   - {fileID: 200647868217846107}
   ClosingAudio: {fileID: 4469379199846792624}
+  InvertedControls: 0
+  passPercentage: 0.5
 --- !u!114 &1051374290511554541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2613,7 +2777,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OpeningLine: "Hold tight your buns. You might have to ROTATE this time\u2026 "
-  TimeLimit: 60
+  TimeLimit: 45
   EndingLines:
   - Yes, yes. Now do it again!
   - '*The Mad King Claps thrice*'
@@ -2636,6 +2800,8 @@ MonoBehaviour:
   - {fileID: 4920436407684582165}
   - {fileID: 200647868217846107}
   ClosingAudio: {fileID: 773543624182232583}
+  InvertedControls: 0
+  passPercentage: 0
 --- !u!114 &5483473048449264152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2694,16 +2860,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32ec1fb10e01109459933b862c687d8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OpeningLine: "You\u2019re testing my patience\u2026and I never was good in school.
-    It turns out you can\u2019t send your professors to the dungeon for failing you\u2026Oh
-    well! "
+  OpeningLine: 'Yes, YES! I want MORE! '
   TimeLimit: 60
   EndingLines:
   - "Delightful\u2026  "
   - "Well executed\u2026executed\u2026 "
   - "You\u2019d do well not to cross me like that again."
-  - This is your last chance you pig-headed simpleton.
-  ClosingLine: 'I can hear the voices...they beg me to end your suffering. '
+  - Unacceptable! Guards, send them TO THE DUNGEON!
+  ClosingLine: 'This bores me... time for something truly impressive. '
   CellPrefab: {fileID: 7746706810666841091, guid: 04d8e7bd59cfc9d428350d00586d6313,
     type: 3}
   FillShape: {fileID: 7960326462975686596}
@@ -2716,6 +2880,8 @@ MonoBehaviour:
   - {fileID: 4920436407684582165}
   - {fileID: 200647868217846107}
   ClosingAudio: {fileID: 934268634439275100}
+  InvertedControls: 0
+  passPercentage: 0.5
 --- !u!114 &7960326462975686596
 MonoBehaviour:
   m_ObjectHideFlags: 0

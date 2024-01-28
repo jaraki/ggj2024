@@ -76,11 +76,13 @@ public class Game : MonoBehaviour {
         if (State == GameState.Paused) {
             Resume();
         } else {
-            lastState = State;
-            State = GameState.Paused;
-            Time.timeScale = 0f;
-            InGameMenu.SetActive(true);
-            ResumeButton.SetActive(true);
+            if(State != GameState.Ended) {
+                lastState = State;
+                State = GameState.Paused;
+                Time.timeScale = 0f;
+                InGameMenu.SetActive(true);
+                ResumeButton.SetActive(true);
+            }
         }
     }
 
@@ -121,24 +123,30 @@ public class Game : MonoBehaviour {
                 }
                 PlayerManager.SetFreeze(true);
                 if (State == GameState.Started) {
-                    string closingLine = Levels[CurrentLevelIndex].ClosingLine;
+                    var level = Levels[CurrentLevelIndex];
+                    string closingLine = level.ClosingLine;
                     int index;
-                    if (overlap >= 75) {
-                        index = 0;
-                    } else if (overlap >= 50) {
-                        index = 1;
-                        KingAnim.SetTrigger("Dissaproval");
-                    } else if (overlap >= 25) {
-                        index = 2;
-                        KingAnim.SetTrigger("Sad");
-                    } else {
+                    if (overlap < level.passPercentage) {
                         index = 3;
-                        KingAnim.SetTrigger("Sad");
-                    }
-                    if (index < 3) {
-                        StartCoroutine(StartNextLevel(index, closingLine));
-                    } else {
                         StartCoroutine(GameOver(index));
+                    } else {
+                        if (overlap >= 75) {
+                            index = 0;
+                        } else if (overlap >= 50) {
+                            index = 1;
+                            KingAnim.SetTrigger("Dissaproval");
+                        } else if (overlap >= 25) {
+                            index = 2;
+                            KingAnim.SetTrigger("Sad");
+                        } else {
+                            index = 3;
+                            KingAnim.SetTrigger("Sad");
+                        }
+                        if (index < 3) {
+                            StartCoroutine(StartNextLevel(index, closingLine));
+                        } else {
+                            StartCoroutine(GameOver(index));
+                        }
                     }
                 }
                 TimerText.text = "Time's Up!";
@@ -157,17 +165,16 @@ public class Game : MonoBehaviour {
         level.gameObject.SetActive(false);
         CurrentLevelIndex++;
         if (CurrentLevelIndex >= Levels.Length) {
-            CurrentLevelIndex = 0;
             yield return StartCoroutine(WinGame());
         } else {
             level = Levels[CurrentLevelIndex];
             foreach (var img in level.fadeOutObjects) {
                 img.gameObject.SetActive(true);
             }
+            PlayerManager.SetFreeze(false);
+            PlayerManager.ResetPlayerSpawns();
+            StartCoroutine(Countdown());
         }
-        PlayerManager.SetFreeze(false);
-        PlayerManager.ResetPlayerSpawns();
-        StartCoroutine(Countdown());
     }
 
     IEnumerator WinGame() {
@@ -181,6 +188,7 @@ public class Game : MonoBehaviour {
         InGameMenu.SetActive(true);
         InGameMenuTitle.text = "You Win!";
         ResumeButton.SetActive(false);
+        EventSystem.SetSelectedGameObject(RestartButton);
     }
 
     IEnumerator GameOver(int index) {
@@ -197,7 +205,6 @@ public class Game : MonoBehaviour {
         if (GameOverSound && !GameOverSound.isPlaying) {
             GameOverSound.Play();
         }
-        // TODO: winning cutscene
         InGameMenu.SetActive(true);
         InGameMenuTitle.text = "Game Over!";
         ResumeButton.SetActive(false);
@@ -206,7 +213,7 @@ public class Game : MonoBehaviour {
 
     IEnumerator Countdown() {
         var level = Levels[CurrentLevelIndex];
-
+        PlayerController.InvertedControls = level.InvertedControls;
         Timer.maxValue = level.TimeLimit;
         Timer.value = level.TimeLimit;
         if (level.OpeningAudio) {
