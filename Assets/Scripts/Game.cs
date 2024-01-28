@@ -161,7 +161,6 @@ public class Game : MonoBehaviour {
         level.gameObject.SetActive(false);
         CurrentLevelIndex++;
         if (CurrentLevelIndex >= Levels.Length) {
-            CurrentLevelIndex = 0;
             yield return StartCoroutine(WinGame());
         } else {
             level = Levels[CurrentLevelIndex];
