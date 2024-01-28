@@ -13,12 +13,12 @@ public class Credits : MonoBehaviour {
     private double startY;
     // Start is called before the first frame update
 
-    public InputActionReference pauseAction;
     void Start() {
         currentTime = 0;
         startY = CreditsText.transform.position.y;
-        pauseAction.action.performed += PauseAction;
-        pauseAction.action.Enable();
+        InputActions act = new InputActions();
+        act.Game.Enable();
+        act.Game.Pause.performed += PauseAction;
     }
 
     private void PauseAction(InputAction.CallbackContext obj) {

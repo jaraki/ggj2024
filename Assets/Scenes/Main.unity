@@ -754,6 +754,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &820186880 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1235250783898845863, guid: adbfb5d73e1cb97448fdbfc08f1ae2ae,
+    type: 3}
+  m_PrefabInstance: {fileID: 8177326698373801791}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,6 +1153,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1345015246 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 553607049735189171, guid: adbfb5d73e1cb97448fdbfc08f1ae2ae,
+    type: 3}
+  m_PrefabInstance: {fileID: 8177326698373801791}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1415722757
@@ -1810,6 +1828,11 @@ PrefabInstance:
       objectReference: {fileID: 179418319}
     - target: {fileID: 7336313710549550891, guid: a486f8694a41a874780c19d31a0eac54,
         type: 3}
+      propertyPath: EventSystem
+      value: 
+      objectReference: {fileID: 1345015246}
+    - target: {fileID: 7336313710549550891, guid: a486f8694a41a874780c19d31a0eac54,
+        type: 3}
       propertyPath: WaitingText
       value: 
       objectReference: {fileID: 1253888881}
@@ -1828,6 +1851,11 @@ PrefabInstance:
       propertyPath: GameOverSound
       value: 
       objectReference: {fileID: 118552099}
+    - target: {fileID: 7336313710549550891, guid: a486f8694a41a874780c19d31a0eac54,
+        type: 3}
+      propertyPath: RestartButton
+      value: 
+      objectReference: {fileID: 820186880}
     - target: {fileID: 7336313710549550891, guid: a486f8694a41a874780c19d31a0eac54,
         type: 3}
       propertyPath: InGameMenuTitle

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Net.Http.Headers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -16,6 +18,7 @@ public enum GameState {
 public class Game : MonoBehaviour {
     public TMP_Text InGameMenuTitle;
     public GameObject ResumeButton;
+    public GameObject RestartButton;
     public GameObject InGameMenu;
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
@@ -35,7 +38,7 @@ public class Game : MonoBehaviour {
     public TMP_Text FillText;
     private double originalFontSize;
     public Animator KingAnim;
-    public InputActionReference pauseAction;
+    public EventSystem EventSystem;
 
     // Start is called before the first frame update
     void Start() {
@@ -44,8 +47,12 @@ public class Game : MonoBehaviour {
         Timer.gameObject.SetActive(false);
         InGameMenu.SetActive(false);
 
-        pauseAction.action.performed += PauseAction;
-        pauseAction.action.Enable();
+        InputActions act = new InputActions();
+        act.Game.Enable();
+        act.Game.Pause.performed += PauseAction;
+
+        //pauseAction.action.performed += PauseAction;
+        //pauseAction.action.Enable();
     }
 
     void SpawnLevel() {
@@ -110,11 +117,11 @@ public class Game : MonoBehaviour {
                 FillText.text = $"{overlap}%";
                 Timer.value -= Time.deltaTime;
             }
-            if(Timer.value <= Music.clip.length) {
-                if(LoopMusic && LoopMusic.isPlaying) {
+            if (Timer.value <= Music.clip.length) {
+                if (LoopMusic && LoopMusic.isPlaying) {
                     LoopMusic.Stop();
                 }
-                if(Music && !Music.isPlaying) {
+                if (Music && !Music.isPlaying) {
                     Music.Play();
                 }
             }
@@ -139,7 +146,7 @@ public class Game : MonoBehaviour {
                         index = 3;
                         KingAnim.SetTrigger("Sad");
                     }
-                    if(index < 3) {
+                    if (index < 3) {
                         StartCoroutine(StartNextLevel(index, closingLine));
                     } else {
                         StartCoroutine(GameOver(closingLine));
@@ -191,6 +198,7 @@ public class Game : MonoBehaviour {
         InGameMenu.SetActive(true);
         InGameMenuTitle.text = "Game Over!";
         ResumeButton.SetActive(false);
+        EventSystem.SetSelectedGameObject(RestartButton);
     }
 
     IEnumerator Countdown() {
