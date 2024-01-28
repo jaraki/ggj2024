@@ -274,6 +274,8 @@ MonoBehaviour:
   CountdownText: {fileID: 0}
   FillText: {fileID: 0}
   KingAnim: {fileID: 0}
+  pauseAction: {fileID: 5566195140217771543, guid: 751713751617d444e811112bdebb5dc5,
+    type: 3}
 --- !u!114 &2246502001775742380
 MonoBehaviour:
   m_ObjectHideFlags: 0

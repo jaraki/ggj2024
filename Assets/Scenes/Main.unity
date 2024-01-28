@@ -1815,12 +1815,6 @@ PrefabInstance:
       objectReference: {fileID: 1253888881}
     - target: {fileID: 7336313710549550891, guid: a486f8694a41a874780c19d31a0eac54,
         type: 3}
-      propertyPath: pauseAction
-      value: 
-      objectReference: {fileID: 5566195140217771543, guid: 751713751617d444e811112bdebb5dc5,
-        type: 3}
-    - target: {fileID: 7336313710549550891, guid: a486f8694a41a874780c19d31a0eac54,
-        type: 3}
       propertyPath: ResumeButton
       value: 
       objectReference: {fileID: 538954181}
