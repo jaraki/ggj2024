@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
-    public const int MinPlayers = 4;
+    public const int MinPlayers = 1;
     public PlayerManager PlayerManager;
     public int RoundTime;
     public int CountdownTime;

@@ -21,8 +21,11 @@ public class PlayerManager : MonoBehaviour
     private void Manager_onPlayerJoined(PlayerInput input) {
         var controller = input.GetComponent<PlayerController>();
         var shape = input.GetComponent<PlayerShapes>();
-        shape.Init(NumPlayers++);
-        controller.Init(input);
+
+        int layer = NumPlayers + 7;
+        shape.Init(NumPlayers, layer);
+        controller.Init(input, layer);
+        NumPlayers++;
         input.transform.position = Vector3.up * 3.0f;
     }
 

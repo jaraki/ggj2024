@@ -31,13 +31,14 @@ public class PlayerShapes : MonoBehaviour {
 
     }
 
-    public void Init(int mode) {
+    public void Init(int mode, int layer) {
         CurrentState = mode;
         int[] currentState = GetState(CurrentState);
         for (int j = 0; j < GridSize; ++j) {
             for (int i = 0; i < GridSize; ++i) {
                 if (currentState[j * GridSize + i] != 0) {
                     var go = Instantiate(CellPrefab, Vector3.zero, Quaternion.identity, ModelParent);
+                    go.layer = layer;
                     go.transform.localPosition = new Vector3(j + 0.5f, GridSize - i - 0.5f, 0);
                     go.name = $"Cell ({j}, {i})";
                 }

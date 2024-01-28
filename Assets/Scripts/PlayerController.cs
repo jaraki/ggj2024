@@ -16,16 +16,21 @@ public class PlayerController : MonoBehaviour {
     // Start is called before the first frame update
     void Awake() {
         body = GetComponent<Rigidbody>();
-        colliders = GetComponentsInChildren<Collider>();
     }
 
     PlayerInput input;
-    public void Init(PlayerInput input) {
+    int layer;
+    int groundLayers = 1 << Layers.Ground | 1 << Layers.Player1 | 1 << Layers.Player2 | 1 << Layers.Player3 | 1 << Layers.Player4;
+    public void Init(PlayerInput input, int layer) {
         this.input = input;
+        this.layer = layer;
+        groundLayers &= ~(1 << layer); // remove your layer from the ground layers
 
         input.actions["Jump"].performed += Jump;
         input.actions["RotateRight"].performed += RotateRight;
         input.actions["RotateLeft"].performed += RotateLeft;
+
+        colliders = GetComponentsInChildren<Collider>();
     }
 
     float targetZRot = 0.0f;
@@ -75,9 +80,10 @@ public class PlayerController : MonoBehaviour {
         body.velocity = vel;
 
         grounded = false;
+
         foreach(var c in colliders) {
-            int count = Physics.BoxCastNonAlloc(c.bounds.center, c.bounds.extents, Vector3.down, hits, Quaternion.identity, 1f, 1 << 6);
-            Debug.DrawLine(c.bounds.center, c.bounds.center + Vector3.down);
+            int count = Physics.BoxCastNonAlloc(c.bounds.center, c.bounds.extents*.95f, Vector3.down, hits, Quaternion.identity, .1f, groundLayers);
+            //Debug.DrawLine(c.bounds.center, c.bounds.center + Vector3.down);
             if(count > 0) {
                 grounded = true;
                 break;
@@ -85,16 +91,15 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-
-    }
+    //void OnDrawGizmos() {
+    //    foreach (var c in colliders) {
+    //        int count = Physics.BoxCastNonAlloc(c.bounds.center, c.bounds.extents, Vector3.down, hits, Quaternion.identity, 1f, 1 << 6);
+    //        Gizmos.color = Color.green;
+    //        Gizmos.DrawWireCube(c.bounds.center, c.bounds.extents*2.0f);
+    //    }
+    //}
 
     bool grounded = false;
-    private void OnCollisionStay(Collision collision) {
-        if (groundedLockout < 0.0f) {
-            grounded = true;
-        }
-    }
 
     private void OnTriggerExit(Collider other) {
         var shape = other.transform.root.GetComponent<FillShape>();
