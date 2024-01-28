@@ -29,7 +29,7 @@ public class Game : MonoBehaviour {
     public TMP_Text FillText;
     private double currentCountdown;
     private double originalFontSize;
-    private float overlap;
+
     // Start is called before the first frame update
     void Start() {
         ResetTimer();
@@ -65,6 +65,7 @@ public class Game : MonoBehaviour {
             State = GameState.Waiting;
         } else {
             WaitingText.text = "";
+
             if (currentCountdown > 0) {
                 if(State == GameState.Waiting) {
                     State = GameState.Countdown;
@@ -78,19 +79,20 @@ public class Game : MonoBehaviour {
                     CountdownText.fontSize = (float)(originalFontSize / delta);
                 }
             } else {
-                if(State == GameState.Countdown) {
+                if (State == GameState.Countdown) {
                     SpawnLevel();
                     State = GameState.Started;
                 }
+
+                var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
                 if (Timer.value > 0) {
-                    overlap = Levels[CurrentLevelIndex].FillShape.CalculateOverlap();
-                    FillText.text = $"{overlap * 100.0f:0.0}%";
+                    FillText.text = $"{overlap}%";
                     Timer.value -= Time.deltaTime;
                 }
-
                 TimerText.text = Math.Ceiling(Timer.value).ToString();
-                if (Timer.value <= 0) {
-                    if(State == GameState.Started) {
+                if (Timer.value <= 0 || overlap == 100) {
+                    PlayerManager.SetFreeze(true);
+                    if (State == GameState.Started) {
                         if (overlap >= 0.76) {
                             SpawnDialog(Levels[CurrentLevelIndex].EndingLines[0]);
                         } else if (overlap >= 0.51) {
@@ -112,6 +114,7 @@ public class Game : MonoBehaviour {
             yield return new WaitForSeconds(3);
             SpawnDialog(Levels[CurrentLevelIndex].ClosingLine);
             yield return new WaitForSeconds(3);
+            PlayerManager.SetFreeze(false);
 
             State = GameState.Waiting;
             ResetTimer();

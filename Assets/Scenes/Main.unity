@@ -317,7 +317,7 @@ MonoBehaviour:
   - ' I might promote you to my personal jesters at this rate! '
   - You Pass. Barely...
   - Unacceptable! Guards, send them TO THE DUNGEON!
-  ClosingLine: Good riddance!
+  ClosingLine: Time's up! I've come to a decision.
   CellPrefab: {fileID: 7746706810666841091, guid: 04d8e7bd59cfc9d428350d00586d6313,
     type: 3}
   FillShape: {fileID: 157119915}
@@ -1460,6 +1460,7 @@ MonoBehaviour:
   - {fileID: 1967477050}
   - {fileID: 721721464}
   - {fileID: 157119916}
+  winningDialog: Well done, now you can die anyways!
   State: 0
   CurrentLevelIndex: 0
   PlayerManager: {fileID: 1457137076}

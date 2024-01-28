@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour {
     public float jumpSpeed = 10f;
 
     //PlayerInput input;
-    Rigidbody body;
+    public Rigidbody body { get; private set; }
     public Collider[] colliders { get; private set; }
     RaycastHit[] hits = new RaycastHit[32];
 
