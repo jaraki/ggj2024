@@ -4,12 +4,20 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 
+[Serializable]
+public struct Grunts {
+    public AudioClip[] grunts;
+}
+
 public class PlayerShapes : MonoBehaviour {
     public const int GridSize = 4;
     public const int NumStates = 4;
     public GameObject CellPrefab;
     public Transform ModelParent;
-    public int CurrentState;
+
+    public GameObject ModelPrefabs;
+    public List<Grunts> grunts = new List<Grunts>();
+
     /// <summary>
     /// This has to be a 1d array in order for serialization to work correctly with the custom editor
     /// </summary>
@@ -32,8 +40,7 @@ public class PlayerShapes : MonoBehaviour {
     }
 
     public void Init(int mode, int layer, Material mat) {
-        CurrentState = mode;
-        int[] currentState = GetState(CurrentState);
+        int[] currentState = GetState(mode);
         for (int j = 0; j < GridSize; ++j) {
             for (int i = 0; i < GridSize; ++i) {
                 if (currentState[j * GridSize + i] != 0) {
