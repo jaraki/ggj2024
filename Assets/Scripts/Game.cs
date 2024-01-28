@@ -76,11 +76,13 @@ public class Game : MonoBehaviour {
         if (State == GameState.Paused) {
             Resume();
         } else {
-            lastState = State;
-            State = GameState.Paused;
-            Time.timeScale = 0f;
-            InGameMenu.SetActive(true);
-            ResumeButton.SetActive(true);
+            if(State != GameState.Ended) {
+                lastState = State;
+                State = GameState.Paused;
+                Time.timeScale = 0f;
+                InGameMenu.SetActive(true);
+                ResumeButton.SetActive(true);
+            }
         }
     }
 
@@ -123,8 +125,8 @@ public class Game : MonoBehaviour {
                 if (State == GameState.Started) {
                     var level = Levels[CurrentLevelIndex];
                     string closingLine = level.ClosingLine;
-                    int index = 0;
-                    if(overlap < level.passPercentage) {
+                    int index;
+                    if (overlap < level.passPercentage) {
                         index = 3;
                         StartCoroutine(GameOver(index));
                     } else {
@@ -142,6 +144,8 @@ public class Game : MonoBehaviour {
                         }
                         if (index < 3) {
                             StartCoroutine(StartNextLevel(index, closingLine));
+                        } else {
+                            StartCoroutine(GameOver(index));
                         }
                     }
                 }
