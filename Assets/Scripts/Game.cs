@@ -24,6 +24,8 @@ public class Game : MonoBehaviour {
     public AudioSource GameOverSound;
     public AudioSource Music;
     public AudioSource LoopMusic;
+    public AudioSource CountdownSound;
+    public AudioSource VictorySound;
     public Level[] Levels;
     public string winningDialog = "Well done, now you can die anyways!";
     public const int MinPlayers = 4;
@@ -149,7 +151,7 @@ public class Game : MonoBehaviour {
                     if (index < 3) {
                         StartCoroutine(StartNextLevel(index, closingLine));
                     } else {
-                        StartCoroutine(GameOver(closingLine));
+                        StartCoroutine(GameOver(index));
                     }
                 }
                 TimerText.text = "Time's Up!";
@@ -184,16 +186,29 @@ public class Game : MonoBehaviour {
         float duration = 3;
         yield return StartCoroutine(SpawnDialog(winningDialog, duration));
         yield return new WaitForSeconds(duration);
+        if (VictorySound && !VictorySound.isPlaying) {
+            VictorySound.Play();
+        }
         // TODO: winning cutscene
         InGameMenu.SetActive(true);
         InGameMenuTitle.text = "You Win!";
         ResumeButton.SetActive(false);
     }
 
-    IEnumerator GameOver(string dialog) {
-        float duration = 3;
-        yield return StartCoroutine(SpawnDialog(dialog, duration));
-        yield return new WaitForSeconds(duration);
+    IEnumerator GameOver(int index) {
+        var level = Levels[CurrentLevelIndex];
+        string endingLine = level.EndingLines[index];
+        string closingLine = level.ClosingLine;
+        level.EndingAudio[index].Play();
+        float endingDuration = level.EndingAudio[index].clip.length;
+        yield return StartCoroutine(SpawnDialog(endingLine, endingDuration));
+        level.ClosingAudio.Play();
+        float closingDuration = level.ClosingAudio.clip.length;
+        yield return StartCoroutine(SpawnDialog(closingLine, closingDuration));
+        yield return new WaitForSeconds(3);
+        if (GameOverSound && !GameOverSound.isPlaying) {
+            GameOverSound.Play();
+        }
         // TODO: winning cutscene
         InGameMenu.SetActive(true);
         InGameMenuTitle.text = "Game Over!";
@@ -211,6 +226,9 @@ public class Game : MonoBehaviour {
             yield return StartCoroutine(SpawnDialog(level.OpeningLine, level.OpeningAudio.clip.length));
         }
         float timer = CountdownTime;
+        if (CountdownSound && !CountdownSound.isPlaying) {
+            CountdownSound.Play();
+        }
         while (timer > 0) {
             CountdownText.text = Math.Ceiling(timer).ToString();
             var delta = Math.Ceiling(timer) - timer;
