@@ -249,11 +249,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6286d2d5f9c6af549b430114afcd1dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InGameMenuTitle: {fileID: 0}
+  ResumeButton: {fileID: 0}
   InGameMenu: {fileID: 0}
   DialogPrefab: {fileID: 8358398930819588280, guid: d01f82862fca5cc4b9acd5508c7f8e5e,
     type: 3}
   GameOverSound: {fileID: 0}
   Music: {fileID: 1731124039031464159}
+  LoopMusic: {fileID: 0}
   Levels:
   - {fileID: 4585037127724385070}
   - {fileID: 388240974928473353}
@@ -621,7 +624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OpeningLine: 'Remember, your insignificant lives are in my hands. MOVE to the target!  '
-  TimeLimit: 5
+  TimeLimit: 30
   EndingLines:
   - 'Well done, fools. I expected as much. '
   - Acceptable. I shall allow it.
