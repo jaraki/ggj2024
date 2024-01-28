@@ -77,4 +77,10 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
+    public void SetFreeze(bool freeze) {
+        foreach(var player in players) {
+            player.body.isKinematic = freeze;
+        }
+    }
+
 }
