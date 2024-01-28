@@ -877,7 +877,7 @@ MonoBehaviour:
   m_NotificationBehavior: 3
   m_MaxPlayerCount: -1
   m_AllowJoining: 1
-  m_JoinBehavior: 0
+  m_JoinBehavior: 2
   m_PlayerJoinedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -895,7 +895,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -3375319853280731845, guid: 751713751617d444e811112bdebb5dc5,
+    m_Reference: {fileID: -791723191550775943, guid: 751713751617d444e811112bdebb5dc5,
       type: 3}
   m_PlayerPrefab: {fileID: 7798935827647955436, guid: 0a0d2bbe1017a5f4fab453ca2de5261a,
     type: 3}
@@ -941,6 +941,10 @@ MonoBehaviour:
   - {fileID: 1672354804}
   - {fileID: 1415722758}
   - {fileID: 433992818}
+  joinAction: {fileID: -791723191550775943, guid: 751713751617d444e811112bdebb5dc5,
+    type: 3}
+  playerPrefab: {fileID: 7798935827647955436, guid: 0a0d2bbe1017a5f4fab453ca2de5261a,
+    type: 3}
 --- !u!114 &1457137077
 MonoBehaviour:
   m_ObjectHideFlags: 0
