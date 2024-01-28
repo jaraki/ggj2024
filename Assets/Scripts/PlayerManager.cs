@@ -11,8 +11,6 @@ public class PlayerManager : MonoBehaviour
     public int NumPlayers = 0;
 
     public Transform[] spawns;
-
-    public InputActionReference joinAction;
     
     public GameObject playerPrefab;
 
@@ -22,9 +20,6 @@ public class PlayerManager : MonoBehaviour
         manager = GetComponent<PlayerInputManager>();
         // make sure asset has "invoke c sharp events"
         manager.onPlayerJoined += Manager_onPlayerJoined;
-
-        joinAction.action.performed += JoinAction_performed;
-        joinAction.action.Enable();
 
         // need to manually join the players, was trying to do it only if they hit the join button but something was chalked there
         PlayerInput.Instantiate(playerPrefab, NumPlayers, "Keyboard", -1, Keyboard.current);
