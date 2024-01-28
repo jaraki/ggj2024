@@ -189,6 +189,7 @@ public class Game : MonoBehaviour {
         InGameMenuTitle.text = "You Win!";
         ResumeButton.SetActive(false);
         EventSystem.SetSelectedGameObject(RestartButton);
+        FillText.text = "";
     }
 
     IEnumerator GameOver(int index) {
@@ -209,6 +210,7 @@ public class Game : MonoBehaviour {
         InGameMenuTitle.text = "Game Over!";
         ResumeButton.SetActive(false);
         EventSystem.SetSelectedGameObject(RestartButton);
+        FillText.text = "";
     }
 
     IEnumerator Countdown() {
