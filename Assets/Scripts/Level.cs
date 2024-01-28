@@ -14,6 +14,9 @@ public class Level : MonoBehaviour {
     [HideInInspector]
     public int[] Board = new int[Size * Size];
     public GameObject[] toggleActive;
+    public AudioSource OpeningAudio;
+    public AudioSource[] EndingAudio;
+    public AudioSource ClosingAudio;
 
     public void Spawn() {
         for (int i = 0; i < Size; i++) {

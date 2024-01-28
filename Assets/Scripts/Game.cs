@@ -14,6 +14,7 @@ public enum GameState {
 public class Game : MonoBehaviour {
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
+    public AudioSource Music;
     public Level[] Levels;
     public string winningDialog = "Well done, now you can die anyways!";
     public const int MinPlayers = 4;
@@ -39,10 +40,10 @@ public class Game : MonoBehaviour {
     }
 
 
-    IEnumerator SpawnDialog(string text) {
+    IEnumerator SpawnDialog(string text, float duration) {
         var go = Instantiate(DialogPrefab, FindAnyObjectByType<Canvas>().transform);
         var dialog = go.GetComponent<Dialog>();
-        yield return dialog.SetLine(text);
+        yield return dialog.SetLine(text, duration);
     }
 
     // Update is called once per frame
@@ -53,7 +54,9 @@ public class Game : MonoBehaviour {
             State = GameState.Waiting;
         } else if (State == GameState.Started) {
             WaitingText.text = "";
-
+            if(!Music.isPlaying) {
+                Music.Play();
+            }
             var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
             if (overlap >= 99) {
                 overlap = 100;
@@ -65,20 +68,21 @@ public class Game : MonoBehaviour {
             TimerText.text = Math.Ceiling(Timer.value).ToString();
             if (Timer.value <= 0 || overlap == 100) {
                 Timer.value = 0;
+                Music.Stop();
                 PlayerManager.SetFreeze(true);
                 if (State == GameState.Started) {
                     string closingLine = Levels[CurrentLevelIndex].ClosingLine;
-                    int line;
+                    int index;
                     if (overlap >= 0.76) {
-                        line = 0;
+                        index = 0;
                     } else if (overlap >= 0.51) {
-                        line = 1;
+                        index = 1;
                     } else if (overlap >= 0.26) {
-                        line = 2;
+                        index = 2;
                     } else {
-                        line = 3;
+                        index = 3;
                     }
-                    StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[line], closingLine));
+                    StartCoroutine(StartNextLevel(index, closingLine));
                 }
                 TimerText.text = "Time's Up!";
                 State = GameState.Ended;
@@ -86,15 +90,17 @@ public class Game : MonoBehaviour {
         }
     }
 
-    IEnumerator StartNextLevel(string endingLine, string closingLine) {
-        yield return StartCoroutine(SpawnDialog(endingLine));
-        yield return StartCoroutine(SpawnDialog(closingLine));
+    IEnumerator StartNextLevel(int endingLineIndex, string closingLine) {
+        Levels[CurrentLevelIndex].EndingAudio[endingLineIndex].Play();
+        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].EndingLines[endingLineIndex], Levels[CurrentLevelIndex].EndingAudio[endingLineIndex].clip.length));
+        Levels[CurrentLevelIndex].ClosingAudio.Play();
+        yield return StartCoroutine(SpawnDialog(closingLine, Levels[CurrentLevelIndex].ClosingAudio.clip.length));
         State = GameState.Waiting;
         Levels[CurrentLevelIndex].gameObject.SetActive(false);
         CurrentLevelIndex++;
         if (CurrentLevelIndex >= Levels.Length) {
             CurrentLevelIndex = 0;
-            yield return StartCoroutine(SpawnDialog(winningDialog));
+            yield return StartCoroutine(SpawnDialog(winningDialog, 3));
             // todo: load winning scene
         }
         // toggle on anything
@@ -109,7 +115,8 @@ public class Game : MonoBehaviour {
     IEnumerator Countdown() {
         Timer.maxValue = Levels[CurrentLevelIndex].TimeLimit;
         Timer.value = Levels[CurrentLevelIndex].TimeLimit;
-        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].OpeningLine));
+        Levels[CurrentLevelIndex].OpeningAudio.Play();
+        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].OpeningLine, Levels[CurrentLevelIndex].OpeningAudio.clip.length));
         float timer = CountdownTime;
         while (timer > 0) {
             CountdownText.text = Math.Ceiling(timer).ToString();
@@ -118,8 +125,8 @@ public class Game : MonoBehaviour {
                 delta = 0.25f;
             }
             CountdownText.fontSize = (float)(originalFontSize / delta);
-            timer -= Time.deltaTime * 2.0f;
-            yield return null;
+            timer -= Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
         }
         CountdownText.text = "";
         SpawnLevel();
