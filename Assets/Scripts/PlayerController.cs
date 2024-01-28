@@ -25,7 +25,6 @@ public class PlayerController : MonoBehaviour {
     }
 
     PlayerInput input;
-    int layer;
     int groundLayers = 1 << Layers.Ground | 1 << Layers.Player1 | 1 << Layers.Player2 | 1 << Layers.Player3 | 1 << Layers.Player4;
     public void Init(int playerIndex, PlayerInput input, int layer) {
         myGrunts = grunts[playerIndex];
@@ -66,11 +65,13 @@ public class PlayerController : MonoBehaviour {
         startRot = body.rotation;
         targetRot *= Quaternion.Euler(0, 0, -90);
         time = 0.0f;
+        PlayRandomSound();
     }
     private void RotateLeft(InputAction.CallbackContext obj) {
         startRot = body.rotation;
         targetRot *= Quaternion.Euler(0, 0, 90);
         time = 0.0f;
+        PlayRandomSound();
     }
 
     float groundedLockout = 0.0f;
@@ -79,6 +80,7 @@ public class PlayerController : MonoBehaviour {
             Vector3 vel = body.velocity;
             vel.y = jumpSpeed;
             body.velocity = vel;
+            PlayRandomSound();
         }
         grounded = false;
         groundedLockout = 0.1f;
