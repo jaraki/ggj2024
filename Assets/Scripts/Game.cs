@@ -13,7 +13,6 @@ public enum GameState {
 
 public class Game : MonoBehaviour {
     public GameObject DialogPrefab;
-    public int DialogDuration = 3;
     public AudioSource GameOverSound;
     public Level[] Levels;
     public string winningDialog = "Well done, now you can die anyways!";
@@ -50,11 +49,10 @@ public class Game : MonoBehaviour {
         currentCountdown = CountdownTime;
     }
 
-    void SpawnDialog(string text) {
+    IEnumerator SpawnDialog(string text) {
         var go = Instantiate(DialogPrefab, FindAnyObjectByType<Canvas>().transform);
         var dialog = go.GetComponent<Dialog>();
-        dialog.SetLine(text);
-        Destroy(go, DialogDuration);
+        yield return dialog.SetLine(text);
     }
 
     // Update is called once per frame
@@ -69,7 +67,7 @@ public class Game : MonoBehaviour {
             if (currentCountdown > 0) {
                 if(State == GameState.Waiting) {
                     State = GameState.Countdown;
-                    SpawnDialog(Levels[CurrentLevelIndex].OpeningLine);
+                    StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].OpeningLine));
                 }
                 
                 currentCountdown -= Time.deltaTime;
@@ -93,16 +91,17 @@ public class Game : MonoBehaviour {
                 if (Timer.value <= 0 || overlap == 100) {
                     PlayerManager.SetFreeze(true);
                     if (State == GameState.Started) {
+                        string closingLine = Levels[CurrentLevelIndex].ClosingLine;
                         if (overlap >= 0.76) {
-                            SpawnDialog(Levels[CurrentLevelIndex].EndingLines[0]);
+                            StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[0], closingLine));
                         } else if (overlap >= 0.51) {
-                            SpawnDialog(Levels[CurrentLevelIndex].EndingLines[1]);
+                            StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[1], closingLine));
                         } else if (overlap >= 0.26) {
-                            SpawnDialog(Levels[CurrentLevelIndex].EndingLines[2]);
+                            StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[2], closingLine));
                         } else {
-                            SpawnDialog(Levels[CurrentLevelIndex].EndingLines[3]);
+                            StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[3], closingLine));
                         }
-                        StartCoroutine(StartNextLevel());
+                        
                     }
                     TimerText.text = "Time's Up!";
                     State = GameState.Ended;
@@ -110,12 +109,9 @@ public class Game : MonoBehaviour {
             }
         }
 
-        IEnumerator StartNextLevel() {
-            yield return new WaitForSeconds(3);
-            SpawnDialog(Levels[CurrentLevelIndex].ClosingLine);
-            yield return new WaitForSeconds(3);
-            PlayerManager.SetFreeze(false);
-
+        IEnumerator StartNextLevel(string endingLine, string closingLine) {
+            yield return StartCoroutine(SpawnDialog(endingLine));
+            yield return StartCoroutine(SpawnDialog(closingLine));            
             State = GameState.Waiting;
             ResetTimer();
             ResetCountdown();
@@ -130,7 +126,7 @@ public class Game : MonoBehaviour {
             foreach(var toggle in Levels[CurrentLevelIndex].toggleActive) {
                 toggle.SetActive(!toggle.activeInHierarchy);
             }
+            PlayerManager.ResetPlayerSpawns();
         }
-
     }
 }
