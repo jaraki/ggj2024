@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "4dd53db9-6ae3-49b3-aa93-2e606eed4280",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -304,6 +313,28 @@
                     "processors": "",
                     "groups": "Gamepad2",
                     "action": "RotateLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dffc3927-2812-4f57-a82d-a6ff1eeba37c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard;Keyboard2",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c3781c5d-3ad1-494b-b74f-cca9859eb2da",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad;Gamepad2",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

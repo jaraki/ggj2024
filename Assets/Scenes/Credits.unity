@@ -598,6 +598,8 @@ MonoBehaviour:
   CreditsText: {fileID: 1362403006}
   CreditsTime: 33
   CreditsEndY: 1500
+  pauseAction: {fileID: 5566195140217771543, guid: 751713751617d444e811112bdebb5dc5,
+    type: 3}
 --- !u!114 &523763640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -866,8 +868,9 @@ MonoBehaviour:
     Acting\nIsabel Veliz\nMar\xEDa Sol\xF3rzano\nDylan Sands\nJohn Francis Collins
     III (Bucky)"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 492d67f857b00f243a0c3f642d94b151, type: 2}
+  m_sharedMaterial: {fileID: 6722939099590070761, guid: 492d67f857b00f243a0c3f642d94b151,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

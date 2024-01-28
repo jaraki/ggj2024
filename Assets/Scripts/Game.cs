@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public enum GameState {
@@ -34,6 +35,7 @@ public class Game : MonoBehaviour {
     public TMP_Text FillText;
     private double originalFontSize;
     public Animator KingAnim;
+    public InputActionReference pauseAction;
 
     // Start is called before the first frame update
     void Start() {
@@ -41,6 +43,9 @@ public class Game : MonoBehaviour {
         StartCoroutine(Countdown());
         Timer.gameObject.SetActive(false);
         InGameMenu.SetActive(false);
+
+        pauseAction.action.performed += PauseAction;
+        pauseAction.action.Enable();
     }
 
     void SpawnLevel() {
@@ -61,20 +66,33 @@ public class Game : MonoBehaviour {
         InGameMenu.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update() {
-        if(Input.GetKeyDown(KeyCode.Escape)) {
-            if(State == GameState.Paused) {
-                Resume();
-            } else {
-                if(State == GameState.Started) {
-                    State = GameState.Paused;
-                    Time.timeScale = 0f;
-                    InGameMenu.SetActive(true);
-                    ResumeButton.SetActive(true);
-                }
+    private void PauseAction(InputAction.CallbackContext obj) {
+        if (State == GameState.Paused) {
+            Resume();
+        } else {
+            if (State == GameState.Started) {
+                State = GameState.Paused;
+                Time.timeScale = 0f;
+                InGameMenu.SetActive(true);
+                ResumeButton.SetActive(true);
             }
         }
+    }
+
+    // Update is called once per frame
+    void Update() {
+        //if(Input.GetKeyDown(KeyCode.Escape)) {
+        //    if(State == GameState.Paused) {
+        //        Resume();
+        //    } else {
+        //        if(State == GameState.Started) {
+        //            State = GameState.Paused;
+        //            Time.timeScale = 0f;
+        //            InGameMenu.SetActive(true);
+        //            ResumeButton.SetActive(true);
+        //        }
+        //    }
+        //}
         if (PlayerManager.NumPlayers < MinPlayers) {
             int difference = MinPlayers - PlayerManager.NumPlayers;
             WaitingText.text = $"Waiting for {difference} More Players...";
