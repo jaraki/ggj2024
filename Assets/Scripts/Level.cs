@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class Level : MonoBehaviour {
     public string OpeningLine;
+    public float TimeLimit = 15.0f;
+    
     public string[] EndingLines = new string[4];
     public string ClosingLine;
     public const int Size = 11;
