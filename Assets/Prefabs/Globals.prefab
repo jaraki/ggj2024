@@ -1821,13 +1821,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OpeningLine: There is no hope for you now, peasants!
-  TimeLimit: 90
+  TimeLimit: 60
   EndingLines:
-  - "You..my good BUFFOONS\u2026are peerless."
-  - ' I might promote you to my personal jesters at this rate! '
-  - You Pass. Barely...
-  - Unacceptable! Guards, send them TO THE DUNGEON!
-  ClosingLine: Hah!
+  - You've pleased King Isos. Butler! Bring this polygon a cookie!
+  - Buffoonery!
+  - Losers
+  - Well you tried your best. But you didn't succeed.
+  ClosingLine: Last chance, peasants.
   CellPrefab: {fileID: 7746706810666841091, guid: 04d8e7bd59cfc9d428350d00586d6313,
     type: 3}
   FillShape: {fileID: 1722384144230740371}
@@ -2111,12 +2111,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OpeningLine: No more playing games. It's time for your final exam. Let's shake
     things up a bit, shall we?
-  TimeLimit: 90
+  TimeLimit: 60
   EndingLines:
-  - "You..my good BUFFOONS\u2026are peerless."
+  - 'Gah! I could kiss you. '
   - ' I might promote you to my personal jesters at this rate! '
-  - You Pass. Barely...
-  - Unacceptable! Guards, send them TO THE DUNGEON!
+  - A valiant effort, I suppose.
+  - Nobody ever finishes this...such a shame.
   ClosingLine: Time's up! I've come to a decision.
   CellPrefab: {fileID: 7746706810666841091, guid: 04d8e7bd59cfc9d428350d00586d6313,
     type: 3}
