@@ -58,10 +58,13 @@ public class Game : MonoBehaviour {
         Levels[CurrentLevelIndex].Spawn();
     }
 
-    IEnumerator SpawnDialog(string text, float duration) {
+    IEnumerator SpawnDialog(string text, float duration, int size = 0) {
         KingAnim.SetBool("isTalking", true);
         var go = Instantiate(DialogPrefab, FindAnyObjectByType<Canvas>().transform);
         var dialog = go.GetComponent<Dialog>();
+        if (size > 0) {
+            dialog.LineText.fontSize = size;
+        }
         yield return dialog.SetLine(text, duration);
         KingAnim.SetBool("isTalking", false);
     }
@@ -76,7 +79,7 @@ public class Game : MonoBehaviour {
         if (State == GameState.Paused) {
             Resume();
         } else {
-            if(State != GameState.Ended) {
+            if (State != GameState.Ended) {
                 lastState = State;
                 State = GameState.Paused;
                 Time.timeScale = 0f;
@@ -218,7 +221,11 @@ public class Game : MonoBehaviour {
         Timer.value = level.TimeLimit;
         if (level.OpeningAudio) {
             level.OpeningAudio.Play();
-            yield return StartCoroutine(SpawnDialog(level.OpeningLine, level.OpeningAudio.clip.length));
+            int size = 0;
+            if(level.OpeningLine.Length > 200) {
+                size = 32;
+            }
+            yield return StartCoroutine(SpawnDialog(level.OpeningLine, level.OpeningAudio.clip.length, size));
         }
         float timer = CountdownTime;
         if (CountdownSound && !CountdownSound.isPlaying) {
