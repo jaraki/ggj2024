@@ -13,10 +13,13 @@ public enum GameState {
 }
 
 public class Game : MonoBehaviour {
+    public TMP_Text InGameMenuTitle;
+    public GameObject ResumeButton;
     public GameObject InGameMenu;
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
     public AudioSource Music;
+    public AudioSource LoopMusic;
     public Level[] Levels;
     public string winningDialog = "Well done, now you can die anyways!";
     public const int MinPlayers = 4;
@@ -68,6 +71,7 @@ public class Game : MonoBehaviour {
                     State = GameState.Paused;
                     Time.timeScale = 0f;
                     InGameMenu.SetActive(true);
+                    ResumeButton.SetActive(true);
                 }
             }
         }
@@ -77,8 +81,8 @@ public class Game : MonoBehaviour {
             State = GameState.Waiting;
         } else if (State == GameState.Started) {
             WaitingText.text = "";
-            if (Music && !Music.isPlaying) {
-                Music.Play();
+            if (LoopMusic && !LoopMusic.isPlaying) {
+                LoopMusic.Play();
             }
             var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
             if (overlap >= 99) {
@@ -88,10 +92,17 @@ public class Game : MonoBehaviour {
                 FillText.text = $"{overlap}%";
                 Timer.value -= Time.deltaTime;
             }
+            if(Timer.value <= Music.clip.length) {
+                if(LoopMusic && LoopMusic.isPlaying) {
+                    LoopMusic.Stop();
+                }
+                if(Music && !Music.isPlaying) {
+                    Music.Play();
+                }
+            }
             TimerText.text = Math.Ceiling(Timer.value).ToString();
             if (Timer.value <= 0 || overlap == 100) {
-                //Timer.value = 0;
-                if (Music) {
+                if (Music && Music.isPlaying) {
                     Music.Stop();
                 }
                 PlayerManager.SetFreeze(true);
@@ -110,7 +121,11 @@ public class Game : MonoBehaviour {
                         index = 3;
                         KingAnim.SetTrigger("Sad");
                     }
-                    StartCoroutine(StartNextLevel(index, closingLine));
+                    if(index < 3) {
+                        StartCoroutine(StartNextLevel(index, closingLine));
+                    } else {
+                        StartCoroutine(GameOver(closingLine));
+                    }
                 }
                 TimerText.text = "Time's Up!";
                 State = GameState.Ended;
@@ -141,9 +156,23 @@ public class Game : MonoBehaviour {
     }
 
     IEnumerator WinGame() {
-        yield return StartCoroutine(SpawnDialog(winningDialog, 3));
+        float duration = 3;
+        yield return StartCoroutine(SpawnDialog(winningDialog, duration));
+        yield return new WaitForSeconds(duration);
         // TODO: winning cutscene
-        CountdownText.text = "You Win!";
+        InGameMenu.SetActive(true);
+        InGameMenuTitle.text = "You Win!";
+        ResumeButton.SetActive(false);
+    }
+
+    IEnumerator GameOver(string dialog) {
+        float duration = 3;
+        yield return StartCoroutine(SpawnDialog(dialog, duration));
+        yield return new WaitForSeconds(duration);
+        // TODO: winning cutscene
+        InGameMenu.SetActive(true);
+        InGameMenuTitle.text = "Game Over!";
+        ResumeButton.SetActive(false);
     }
 
     IEnumerator Countdown() {
