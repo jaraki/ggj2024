@@ -2,21 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
 
-public class PlayerManager : MonoBehaviour
-{
+public class PlayerManager : MonoBehaviour {
 
     PlayerInputManager manager;
 
     public int NumPlayers = 0;
 
     public Transform[] spawns;
-    
+    List<PlayerController> players = new List<PlayerController>();
+
     public GameObject playerPrefab;
 
     // Start is called before the first frame update
-    void Awake()
-    {
+    void Awake() {
         manager = GetComponent<PlayerInputManager>();
         // make sure asset has "invoke c sharp events"
         manager.onPlayerJoined += Manager_onPlayerJoined;
@@ -59,9 +59,28 @@ public class PlayerManager : MonoBehaviour
 
         int layer = NumPlayers + 7;
         shape.Init(NumPlayers, layer);
-        controller.Init(input, NumPlayers, layer);
-        input.transform.position = spawns[NumPlayers].position + Vector3.up * 3.0f;
+        controller.Init(input, layer);
+        SetSpawn(input.transform, NumPlayers);
+        players.Add(controller);
         NumPlayers++;
+    }
+
+    void SetSpawn(Transform player, int index) {
+        if (index >= 0 && index < spawns.Length) {
+            player.position = spawns[index].position + Vector3.up * 3.0f;
+        }
+    }
+
+    void ResetPlayerSpawns() {
+        for (int i = 0; i < players.Count; ++i) {
+            SetSpawn(players[i].transform, i);
+        }
+    }
+
+    void Update() {
+        if (UnityEngine.Input.GetKeyDown(KeyCode.P)) {
+            ResetPlayerSpawns();
+        }
     }
 
 }

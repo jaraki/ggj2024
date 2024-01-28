@@ -21,16 +21,7 @@ public class PlayerController : MonoBehaviour {
     PlayerInput input;
     int layer;
     int groundLayers = 1 << Layers.Ground | 1 << Layers.Player1 | 1 << Layers.Player2 | 1 << Layers.Player3 | 1 << Layers.Player4;
-    public void Init(PlayerInput input, int playerNumber, int layer) {
-        //if (playerNumber == 0) {
-        //    input.SwitchCurrentControlScheme("Keyboard", Keyboard.current);
-        //} else if (playerNumber == 1) {
-        //    input.SwitchCurrentControlScheme("Keyboard2", Keyboard.current);
-        //}else if (playerNumber == 2) {
-        //    input.SwitchCurrentControlScheme("Gamepad", Gamepad.current);
-        //}else if(playerNumber == 3) {
-        //    input.SwitchCurrentControlScheme("Gamepad2", Gamepad.current);
-        //}
+    public void Init(PlayerInput input, int layer) {
 
         this.input = input;
         groundLayers &= ~(1 << layer); // remove your layer from the ground layers
@@ -56,20 +47,16 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    float targetZRot = 0.0f;
-
     Quaternion startRot = Quaternion.identity;
     Quaternion targetRot = Quaternion.identity;
 
     private void RotateRight(InputAction.CallbackContext obj) {
         startRot = body.rotation;
-        targetZRot -= 90;
         targetRot *= Quaternion.Euler(0, 0, -90);
         time = 0.0f;
     }
     private void RotateLeft(InputAction.CallbackContext obj) {
         startRot = body.rotation;
-        targetZRot += 90;
         targetRot *= Quaternion.Euler(0, 0, 90);
         time = 0.0f;
     }
@@ -114,13 +101,6 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    //void OnDrawGizmos() {
-    //    foreach (var c in colliders) {
-    //        int count = Physics.BoxCastNonAlloc(c.bounds.center, c.bounds.extents, Vector3.down, hits, Quaternion.identity, 1f, 1 << 6);
-    //        Gizmos.color = Color.green;
-    //        Gizmos.DrawWireCube(c.bounds.center, c.bounds.extents*2.0f);
-    //    }
-    //}
 
     bool grounded = false;
 
