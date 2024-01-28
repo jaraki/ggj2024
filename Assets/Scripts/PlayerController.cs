@@ -21,9 +21,18 @@ public class PlayerController : MonoBehaviour {
     PlayerInput input;
     int layer;
     int groundLayers = 1 << Layers.Ground | 1 << Layers.Player1 | 1 << Layers.Player2 | 1 << Layers.Player3 | 1 << Layers.Player4;
-    public void Init(PlayerInput input, int layer) {
+    public void Init(PlayerInput input, int playerNumber, int layer) {
+        //if (playerNumber == 0) {
+        //    input.SwitchCurrentControlScheme("Keyboard", Keyboard.current);
+        //} else if (playerNumber == 1) {
+        //    input.SwitchCurrentControlScheme("Keyboard2", Keyboard.current);
+        //}else if (playerNumber == 2) {
+        //    input.SwitchCurrentControlScheme("Gamepad", Gamepad.current);
+        //}else if(playerNumber == 3) {
+        //    input.SwitchCurrentControlScheme("Gamepad2", Gamepad.current);
+        //}
+
         this.input = input;
-        this.layer = layer;
         groundLayers &= ~(1 << layer); // remove your layer from the ground layers
 
         input.actions["Jump"].performed += Jump;
@@ -31,6 +40,20 @@ public class PlayerController : MonoBehaviour {
         input.actions["RotateLeft"].performed += RotateLeft;
 
         colliders = GetComponentsInChildren<Collider>();
+
+        // center player colliders around their center
+        Vector3 averageOffset = Vector3.zero;
+        int count = 0;
+        foreach(var c in colliders) {
+            averageOffset += c.transform.localPosition;
+            count++;
+        }
+        if (count > 0) {
+            averageOffset /= count;
+            foreach (var c in colliders) {
+                c.transform.localPosition = c.transform.localPosition - averageOffset;
+            }
+        }
     }
 
     float targetZRot = 0.0f;
@@ -67,7 +90,7 @@ public class PlayerController : MonoBehaviour {
         if (!input) {
             return;
         }
-        time += Time.deltaTime * 2.0f;
+        time += Time.deltaTime * 3.0f;
         Quaternion r = Quaternion.Lerp(startRot, targetRot, time);
         body.MoveRotation(r);
         //body.rotation = Quaternion.Euler(rot);
@@ -81,10 +104,10 @@ public class PlayerController : MonoBehaviour {
 
         grounded = false;
 
-        foreach(var c in colliders) {
-            int count = Physics.BoxCastNonAlloc(c.bounds.center, c.bounds.extents*.95f, Vector3.down, hits, Quaternion.identity, .1f, groundLayers);
+        foreach (var c in colliders) {
+            int count = Physics.BoxCastNonAlloc(c.bounds.center, c.bounds.extents * .95f, Vector3.down, hits, Quaternion.identity, .1f, groundLayers);
             //Debug.DrawLine(c.bounds.center, c.bounds.center + Vector3.down);
-            if(count > 0) {
+            if (count > 0) {
                 grounded = true;
                 break;
             }
@@ -102,14 +125,14 @@ public class PlayerController : MonoBehaviour {
     bool grounded = false;
 
     private void OnTriggerExit(Collider other) {
-        var shape = other.transform.root.GetComponent<FillShape>();
+        var shape = other.transform.parent.GetComponent<FillShape>();
         if (shape) {
             shape.RemovePlayer(this);
         }
     }
 
     private void OnTriggerStay(Collider other) {
-        var shape = other.transform.root.GetComponent<FillShape>();
+        var shape = other.transform.parent.GetComponent<FillShape>();
         if (shape) {
             shape.AddPlayer(this);
         }

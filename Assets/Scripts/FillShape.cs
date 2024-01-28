@@ -4,30 +4,24 @@ using UnityEngine;
 using TMPro;
 
 public class FillShape : MonoBehaviour {
+    private float totalArea = 0;
+    public Collider[] Colliders { get; private set; }
+    public List<PlayerController> collidingPlayers = new();
 
-    public float totalArea = 0;
-    public Collider[] colliders { get; private set; }
-    List<PlayerController> collidingPlayers = new List<PlayerController>();
-    public TMP_Text text;
+    public void Init() {
+        Colliders = GetComponentsInChildren<Collider>();
 
-    // Start is called before the first frame update
-    void Start() {
-        colliders = GetComponentsInChildren<Collider>();
-
-        foreach (Collider collider in colliders) {
+        foreach (Collider collider in Colliders) {
             var b = collider.bounds;
-
             totalArea += (b.max.x - b.min.x) * (b.max.y - b.min.y) * (b.max.z - b.min.z);
-
         }
-
     }
 
-    void CalculateOverlap() {
+    public float CalculateOverlap() {
         float overlapArea = 0.0f;
         foreach (var p in collidingPlayers) {
             foreach (var c in p.colliders) {
-                foreach (var mc in colliders) {
+                foreach (var mc in Colliders) {
                     var a = c.bounds;
                     var b = mc.bounds;
                     float area = 
@@ -41,12 +35,7 @@ public class FillShape : MonoBehaviour {
         }
         float percent = overlapArea / totalArea; // bounds kinda weird when rotating
         percent = Mathf.Clamp01(percent);
-        text.text = $"{percent * 100.0f:0.0}%";
-    }
-
-    // Update is called once per frame
-    void Update() {
-        CalculateOverlap();
+        return percent;
     }
 
     public void AddPlayer(PlayerController player) {
