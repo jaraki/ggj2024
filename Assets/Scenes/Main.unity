@@ -311,12 +311,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OpeningLine: " Well, well, well\u2026 Only an elite few have managed to make it
     this far. You must be some sort of special fools."
+  TimeLimit: 15
   EndingLines:
   - "You..my good BUFFOONS\u2026are peerless."
   - ' I might promote you to my personal jesters at this rate! '
   - You Pass. Barely...
   - Unacceptable! Guards, send them TO THE DUNGEON!
-  ClosingLine: Good riddance!
+  ClosingLine: Time's up! I've come to a decision.
   CellPrefab: {fileID: 7746706810666841091, guid: 04d8e7bd59cfc9d428350d00586d6313,
     type: 3}
   FillShape: {fileID: 157119915}
@@ -851,6 +852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OpeningLine: 'Remember, your insignificant lives are in my hands. MOVE to the target!  '
+  TimeLimit: 15
   EndingLines:
   - 'Well done, fools. I expected as much. '
   - Acceptable. I shall allow it.
@@ -951,6 +953,7 @@ MonoBehaviour:
   OpeningLine: "You\u2019re testing my patience\u2026and I never was good in school.
     It turns out you can\u2019t send your professors to the dungeon for failing you\u2026Oh
     well! "
+  TimeLimit: 15
   EndingLines:
   - "Delightful\u2026  "
   - "Well executed\u2026executed\u2026 "
@@ -1265,6 +1268,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OpeningLine: "Hold tight your buns. You might have to ROTATE this time\u2026 "
+  TimeLimit: 15
   EndingLines:
   - Yes, yes. Now do it again!
   - '*The Mad King Claps thrice*'
@@ -1705,6 +1709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OpeningLine: ' Now STACK, peons! '
+  TimeLimit: 15
   EndingLines:
   - 'yes, Yes, YES! I want MORE! '
   - 'mmmhm perhaps '
