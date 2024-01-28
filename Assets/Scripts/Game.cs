@@ -54,7 +54,7 @@ public class Game : MonoBehaviour {
             State = GameState.Waiting;
         } else if (State == GameState.Started) {
             WaitingText.text = "";
-            if(!Music.isPlaying) {
+            if(Music && !Music.isPlaying) {
                 Music.Play();
             }
             var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
@@ -68,7 +68,9 @@ public class Game : MonoBehaviour {
             TimerText.text = Math.Ceiling(Timer.value).ToString();
             if (Timer.value <= 0 || overlap == 100) {
                 Timer.value = 0;
-                Music.Stop();
+                if (Music) {
+                    Music.Stop();
+                }
                 PlayerManager.SetFreeze(true);
                 if (State == GameState.Started) {
                     string closingLine = Levels[CurrentLevelIndex].ClosingLine;
@@ -113,10 +115,14 @@ public class Game : MonoBehaviour {
     }
 
     IEnumerator Countdown() {
-        Timer.maxValue = Levels[CurrentLevelIndex].TimeLimit;
-        Timer.value = Levels[CurrentLevelIndex].TimeLimit;
-        Levels[CurrentLevelIndex].OpeningAudio.Play();
-        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].OpeningLine, Levels[CurrentLevelIndex].OpeningAudio.clip.length));
+        var level = Levels[CurrentLevelIndex];
+        
+        Timer.maxValue = level.TimeLimit;
+        Timer.value = level.TimeLimit;
+        if (level.OpeningAudio) {
+            level.OpeningAudio.Play();
+            yield return StartCoroutine(SpawnDialog(level.OpeningLine, level.OpeningAudio.clip.length));
+        }
         float timer = CountdownTime;
         while (timer > 0) {
             CountdownText.text = Math.Ceiling(timer).ToString();

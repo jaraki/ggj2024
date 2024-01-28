@@ -15,6 +15,8 @@ public class PlayerManager : MonoBehaviour {
 
     public GameObject playerPrefab;
 
+    public Material[] playerMats;
+
     // Start is called before the first frame update
     void Awake() {
         manager = GetComponent<PlayerInputManager>();
@@ -58,7 +60,7 @@ public class PlayerManager : MonoBehaviour {
         var shape = input.GetComponent<PlayerShapes>();
 
         int layer = NumPlayers + 7;
-        shape.Init(NumPlayers, layer);
+        shape.Init(NumPlayers, layer, playerMats[NumPlayers]);
         controller.Init(input, layer);
         SetSpawn(input.transform, NumPlayers);
         players.Add(controller);

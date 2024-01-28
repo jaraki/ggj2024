@@ -31,7 +31,7 @@ public class PlayerShapes : MonoBehaviour {
 
     }
 
-    public void Init(int mode, int layer) {
+    public void Init(int mode, int layer, Material mat) {
         CurrentState = mode;
         int[] currentState = GetState(CurrentState);
         for (int j = 0; j < GridSize; ++j) {
@@ -43,6 +43,10 @@ public class PlayerShapes : MonoBehaviour {
                     go.name = $"Cell ({j}, {i})";
                 }
             }
+        }
+        var rends = GetComponentsInChildren<Renderer>();
+        foreach(var rend in rends) {
+            rend.material = mat;
         }
     }
 
