@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour {
     public float speed = 5.0f;
     public float jumpSpeed = 10f;
 
+    public static bool InvertedControls = false;
+
     //PlayerInput input;
     public Rigidbody body { get; private set; }
     public Collider[] colliders { get; private set; }
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour {
 
         colliders = GetComponentsInChildren<Collider>();
 
+        // not needed anymore with manually set player models
         //// center player colliders around their center
         //Vector3 averageOffset = Vector3.zero;
         //int count = 0;
@@ -63,13 +66,15 @@ public class PlayerController : MonoBehaviour {
 
     private void RotateRight(InputAction.CallbackContext obj) {
         startRot = body.rotation;
-        targetRot *= Quaternion.Euler(0, 0, -90);
+        float rot = InvertedControls ? 90 : -90;
+        targetRot *= Quaternion.Euler(0, 0, rot);
         time = 0.0f;
         PlayRandomSound();
     }
     private void RotateLeft(InputAction.CallbackContext obj) {
         startRot = body.rotation;
-        targetRot *= Quaternion.Euler(0, 0, 90);
+        float rot = InvertedControls ? -90 : 90;
+        targetRot *= Quaternion.Euler(0, 0, rot);
         time = 0.0f;
         PlayRandomSound();
     }
@@ -95,26 +100,29 @@ public class PlayerController : MonoBehaviour {
         Quaternion r = Quaternion.Lerp(startRot, targetRot, time);
         body.MoveRotation(r);
         //body.rotation = Quaternion.Euler(rot);
-        groundedLockout -= Time.deltaTime;
         var move = input.actions["Move"].ReadValue<Vector2>();
         move *= speed;
+        if (InvertedControls) {
+            move *= -1.0f;
+        }
         Vector3 vel = body.velocity;
         vel.x = move.x;
         vel.z = move.y;
         body.velocity = vel;
 
+        groundedLockout -= Time.deltaTime;
         grounded = false;
-
-        foreach (var c in colliders) {
-            int count = Physics.BoxCastNonAlloc(c.bounds.center, c.bounds.extents * .95f, Vector3.down, hits, Quaternion.identity, .1f, groundLayers);
-            //Debug.DrawLine(c.bounds.center, c.bounds.center + Vector3.down);
-            if (count > 0) {
-                grounded = true;
-                break;
+        if (groundedLockout < 0) {
+            foreach (var c in colliders) {
+                int count = Physics.BoxCastNonAlloc(c.bounds.center, c.bounds.extents * .95f, Vector3.down, hits, Quaternion.identity, .1f, groundLayers);
+                //Debug.DrawLine(c.bounds.center, c.bounds.center + Vector3.down);
+                if (count > 0) {
+                    grounded = true;
+                    break;
+                }
             }
         }
     }
-
 
     bool grounded = false;
 
@@ -131,7 +139,6 @@ public class PlayerController : MonoBehaviour {
             shape.AddPlayer(this);
         }
     }
-
 
 }
 
