@@ -14,6 +14,7 @@ public enum GameState {
 public class Game : MonoBehaviour {
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
+    public AudioSource Music;
     public Level[] Levels;
     public string winningDialog = "Well done, now you can die anyways!";
     public const int MinPlayers = 4;
@@ -53,7 +54,9 @@ public class Game : MonoBehaviour {
             State = GameState.Waiting;
         } else if (State == GameState.Started) {
             WaitingText.text = "";
-
+            if(!Music.isPlaying) {
+                Music.Play();
+            }
             var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
             if (overlap >= 99) {
                 overlap = 100;
@@ -65,6 +68,7 @@ public class Game : MonoBehaviour {
             TimerText.text = Math.Ceiling(Timer.value).ToString();
             if (Timer.value <= 0 || overlap == 100) {
                 Timer.value = 0;
+                Music.Stop();
                 PlayerManager.SetFreeze(true);
                 if (State == GameState.Started) {
                     string closingLine = Levels[CurrentLevelIndex].ClosingLine;
