@@ -30,6 +30,7 @@ public class Game : MonoBehaviour {
     public TMP_Text CountdownText;
     public TMP_Text FillText;
     private double originalFontSize;
+    public Animator KingAnim;
 
     // Start is called before the first frame update
     void Start() {
@@ -44,9 +45,11 @@ public class Game : MonoBehaviour {
     }
 
     IEnumerator SpawnDialog(string text, float duration) {
+        KingAnim.SetBool("isTalking", true);
         var go = Instantiate(DialogPrefab, FindAnyObjectByType<Canvas>().transform);
         var dialog = go.GetComponent<Dialog>();
         yield return dialog.SetLine(text, duration);
+        KingAnim.SetBool("isTalking", false);
     }
 
     public void Resume() {
@@ -95,14 +98,17 @@ public class Game : MonoBehaviour {
                 if (State == GameState.Started) {
                     string closingLine = Levels[CurrentLevelIndex].ClosingLine;
                     int index;
-                    if (overlap >= 0.76) {
+                    if (overlap >= 75) {
                         index = 0;
-                    } else if (overlap >= 0.51) {
+                    } else if (overlap >= 50) {
                         index = 1;
-                    } else if (overlap >= 0.26) {
+                        KingAnim.SetTrigger("Dissaproval");
+                    } else if (overlap >= 25) {
                         index = 2;
+                        KingAnim.SetTrigger("Sad");
                     } else {
                         index = 3;
+                        KingAnim.SetTrigger("Sad");
                     }
                     StartCoroutine(StartNextLevel(index, closingLine));
                 }
