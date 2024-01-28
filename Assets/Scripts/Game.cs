@@ -121,24 +121,28 @@ public class Game : MonoBehaviour {
                 }
                 PlayerManager.SetFreeze(true);
                 if (State == GameState.Started) {
-                    string closingLine = Levels[CurrentLevelIndex].ClosingLine;
-                    int index;
-                    if (overlap >= 75) {
-                        index = 0;
-                    } else if (overlap >= 50) {
-                        index = 1;
-                        KingAnim.SetTrigger("Dissaproval");
-                    } else if (overlap >= 25) {
-                        index = 2;
-                        KingAnim.SetTrigger("Sad");
-                    } else {
+                    var level = Levels[CurrentLevelIndex];
+                    string closingLine = level.ClosingLine;
+                    int index = 0;
+                    if(overlap < level.passPercentage) {
                         index = 3;
-                        KingAnim.SetTrigger("Sad");
-                    }
-                    if (index < 3) {
-                        StartCoroutine(StartNextLevel(index, closingLine));
-                    } else {
                         StartCoroutine(GameOver(index));
+                    } else {
+                        if (overlap >= 75) {
+                            index = 0;
+                        } else if (overlap >= 50) {
+                            index = 1;
+                            KingAnim.SetTrigger("Dissaproval");
+                        } else if (overlap >= 25) {
+                            index = 2;
+                            KingAnim.SetTrigger("Sad");
+                        } else {
+                            index = 3;
+                            KingAnim.SetTrigger("Sad");
+                        }
+                        if (index < 3) {
+                            StartCoroutine(StartNextLevel(index, closingLine));
+                        }
                     }
                 }
                 TimerText.text = "Time's Up!";
@@ -149,7 +153,6 @@ public class Game : MonoBehaviour {
 
     IEnumerator StartNextLevel(int endingLineIndex, string closingLine) {
         var level = Levels[CurrentLevelIndex];
-        PlayerController.InvertedControls = level.InvertedControls;
         level.EndingAudio[endingLineIndex].Play();
         yield return StartCoroutine(SpawnDialog(level.EndingLines[endingLineIndex], level.EndingAudio[endingLineIndex].clip.length));
         level.ClosingAudio.Play();
@@ -207,7 +210,7 @@ public class Game : MonoBehaviour {
 
     IEnumerator Countdown() {
         var level = Levels[CurrentLevelIndex];
-
+        PlayerController.InvertedControls = level.InvertedControls;
         Timer.maxValue = level.TimeLimit;
         Timer.value = level.TimeLimit;
         if (level.OpeningAudio) {
