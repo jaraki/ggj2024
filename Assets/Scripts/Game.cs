@@ -68,17 +68,17 @@ public class Game : MonoBehaviour {
                 PlayerManager.SetFreeze(true);
                 if (State == GameState.Started) {
                     string closingLine = Levels[CurrentLevelIndex].ClosingLine;
-                    int line;
+                    int index;
                     if (overlap >= 0.76) {
-                        line = 0;
+                        index = 0;
                     } else if (overlap >= 0.51) {
-                        line = 1;
+                        index = 1;
                     } else if (overlap >= 0.26) {
-                        line = 2;
+                        index = 2;
                     } else {
-                        line = 3;
+                        index = 3;
                     }
-                    StartCoroutine(StartNextLevel(Levels[CurrentLevelIndex].EndingLines[line], closingLine));
+                    StartCoroutine(StartNextLevel(index, closingLine));
                 }
                 TimerText.text = "Time's Up!";
                 State = GameState.Ended;
@@ -86,8 +86,10 @@ public class Game : MonoBehaviour {
         }
     }
 
-    IEnumerator StartNextLevel(string endingLine, string closingLine) {
-        yield return StartCoroutine(SpawnDialog(endingLine));
+    IEnumerator StartNextLevel(int endingLineIndex, string closingLine) {
+        Levels[CurrentLevelIndex].EndingAudio[endingLineIndex].Play();
+        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].EndingLines[endingLineIndex]));
+        Levels[CurrentLevelIndex].ClosingAudio.Play();
         yield return StartCoroutine(SpawnDialog(closingLine));
         State = GameState.Waiting;
         Levels[CurrentLevelIndex].gameObject.SetActive(false);
@@ -109,6 +111,7 @@ public class Game : MonoBehaviour {
     IEnumerator Countdown() {
         Timer.maxValue = Levels[CurrentLevelIndex].TimeLimit;
         Timer.value = Levels[CurrentLevelIndex].TimeLimit;
+        Levels[CurrentLevelIndex].OpeningAudio.Play();
         yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].OpeningLine));
         float timer = CountdownTime;
         while (timer > 0) {
@@ -118,8 +121,8 @@ public class Game : MonoBehaviour {
                 delta = 0.01f;
             }
             CountdownText.fontSize = (float)(originalFontSize / delta);
-            timer -= Time.deltaTime * 2.0f;
-            yield return null;
+            timer -= Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
         }
         CountdownText.text = "";
         SpawnLevel();
