@@ -6,6 +6,7 @@ using UnityEngine;
 public class Level : MonoBehaviour {
     public string OpeningLine;
     public string[] EndingLines = new string[5];
+    public string ClosingLine;
     public const int Size = 11;
     public GameObject CellPrefab;
     [HideInInspector]
