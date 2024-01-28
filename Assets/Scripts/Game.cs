@@ -149,6 +149,7 @@ public class Game : MonoBehaviour {
 
     IEnumerator StartNextLevel(int endingLineIndex, string closingLine) {
         var level = Levels[CurrentLevelIndex];
+        PlayerController.InvertedControls = level.InvertedControls;
         level.EndingAudio[endingLineIndex].Play();
         yield return StartCoroutine(SpawnDialog(level.EndingLines[endingLineIndex], level.EndingAudio[endingLineIndex].clip.length));
         level.ClosingAudio.Play();
