@@ -22,7 +22,7 @@ public class Game : MonoBehaviour {
     public GameObject InGameMenu;
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
-    public AudioSource Music;
+    public AudioSource Music; // one at the end
     public AudioSource LoopMusic;
     public AudioSource CountdownSound;
     public AudioSource VictorySound;
@@ -120,17 +120,20 @@ public class Game : MonoBehaviour {
                 Timer.value -= Time.deltaTime;
             }
             if (Timer.value <= Music.clip.length) {
-                if (LoopMusic && LoopMusic.isPlaying) {
-                    LoopMusic.Stop();
-                }
-                if (Music && !Music.isPlaying) {
-                    Music.Play();
-                }
+                //if (LoopMusic && LoopMusic.isPlaying) {
+                //    LoopMusic.Stop();
+                //}
+                //if (Music && !Music.isPlaying) {
+                //    Music.Play();
+                //}
             }
             TimerText.text = Math.Ceiling(Timer.value).ToString();
             if (Timer.value <= 0 || overlap == 100) {
-                if (Music && Music.isPlaying) {
-                    Music.Stop();
+                //if (Music && Music.isPlaying) {
+                //    Music.Stop();
+                //}
+                if (LoopMusic && LoopMusic.isPlaying) {
+                    LoopMusic.Stop();
                 }
                 PlayerManager.SetFreeze(true);
                 if (State == GameState.Started) {
