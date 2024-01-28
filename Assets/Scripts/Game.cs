@@ -15,11 +15,11 @@ public class Game : MonoBehaviour {
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
     public Level[] Levels;
+    public string winningDialog = "Well done, now you can die anyways!";
     public const int MinPlayers = 4;
     public GameState State;
     public int CurrentLevelIndex;
     public PlayerManager PlayerManager;
-    public int RoundTime;
     public int CountdownTime;
     public Slider Timer;
     public TMP_Text WaitingText;
@@ -41,8 +41,8 @@ public class Game : MonoBehaviour {
     }
 
     void ResetTimer() {
-        Timer.maxValue = RoundTime;
-        Timer.value = RoundTime;
+        Timer.maxValue = Levels[CurrentLevelIndex].TimeLimit;
+        Timer.value = Levels[CurrentLevelIndex].TimeLimit;
     }
 
     void ResetCountdown() {
@@ -115,6 +115,15 @@ public class Game : MonoBehaviour {
             ResetCountdown();
             Levels[CurrentLevelIndex].gameObject.SetActive(false);
             CurrentLevelIndex++;
+            if (CurrentLevelIndex >= Levels.Length) {
+                CurrentLevelIndex = 0;
+                SpawnDialog(winningDialog);
+                yield return new WaitForSeconds(3);
+            }
+            // toggle on anything
+            foreach(var toggle in Levels[CurrentLevelIndex].toggleActive) {
+                toggle.SetActive(!toggle.activeInHierarchy);
+            }
             PlayerManager.ResetPlayerSpawns();
         }
     }
