@@ -17,6 +17,7 @@ public class Game : MonoBehaviour {
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
     public AudioSource Music;
+    public AudioSource LoopMusic;
     public Level[] Levels;
     public string winningDialog = "Well done, now you can die anyways!";
     public const int MinPlayers = 4;
@@ -74,8 +75,8 @@ public class Game : MonoBehaviour {
             State = GameState.Waiting;
         } else if (State == GameState.Started) {
             WaitingText.text = "";
-            if (Music && !Music.isPlaying) {
-                Music.Play();
+            if (LoopMusic && !LoopMusic.isPlaying) {
+                LoopMusic.Play();
             }
             var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
             if (overlap >= 99) {
@@ -85,10 +86,17 @@ public class Game : MonoBehaviour {
                 FillText.text = $"{overlap}%";
                 Timer.value -= Time.deltaTime;
             }
+            if(Timer.value <= Music.clip.length) {
+                if(LoopMusic && LoopMusic.isPlaying) {
+                    LoopMusic.Stop();
+                }
+                if(Music && !Music.isPlaying) {
+                    Music.Play();
+                }
+            }
             TimerText.text = Math.Ceiling(Timer.value).ToString();
             if (Timer.value <= 0 || overlap == 100) {
-                //Timer.value = 0;
-                if (Music) {
+                if (Music && Music.isPlaying) {
                     Music.Stop();
                 }
                 PlayerManager.SetFreeze(true);

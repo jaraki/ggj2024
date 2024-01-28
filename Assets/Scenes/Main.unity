@@ -1299,6 +1299,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 270, y: 0, z: 0}
+--- !u!82 &1692304836 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 586503897962883108, guid: a486f8694a41a874780c19d31a0eac54,
+    type: 3}
+  m_PrefabInstance: {fileID: 4356972474687466053}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1753145400 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1425654623085047614, guid: adbfb5d73e1cb97448fdbfc08f1ae2ae,
@@ -1591,11 +1597,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1218872249956336720, guid: a486f8694a41a874780c19d31a0eac54,
         type: 3}
-      propertyPath: fadeOutObjects.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1218872249956336720, guid: a486f8694a41a874780c19d31a0eac54,
-        type: 3}
       propertyPath: fadeOutObjects.Array.data[0]
       value: 
       objectReference: {fileID: 8177326698373801799}
@@ -1614,26 +1615,6 @@ PrefabInstance:
       propertyPath: fadeOutObjects.Array.data[3]
       value: 
       objectReference: {fileID: 8177326698373801796}
-    - target: {fileID: 1218872249956336720, guid: a486f8694a41a874780c19d31a0eac54,
-        type: 3}
-      propertyPath: fadeOutObjects.Array.data[4]
-      value: 
-      objectReference: {fileID: 8177326698373801799}
-    - target: {fileID: 1218872249956336720, guid: a486f8694a41a874780c19d31a0eac54,
-        type: 3}
-      propertyPath: fadeOutObjects.Array.data[5]
-      value: 
-      objectReference: {fileID: 8177326698373801798}
-    - target: {fileID: 1218872249956336720, guid: a486f8694a41a874780c19d31a0eac54,
-        type: 3}
-      propertyPath: fadeOutObjects.Array.data[6]
-      value: 
-      objectReference: {fileID: 8177326698373801797}
-    - target: {fileID: 1218872249956336720, guid: a486f8694a41a874780c19d31a0eac54,
-        type: 3}
-      propertyPath: fadeOutObjects.Array.data[7]
-      value: 
-      objectReference: {fileID: 8177326698373801796}
     - target: {fileID: 3077541949697409137, guid: a486f8694a41a874780c19d31a0eac54,
         type: 3}
       propertyPath: m_Name
@@ -1649,6 +1630,11 @@ PrefabInstance:
       propertyPath: FillText
       value: 
       objectReference: {fileID: 792613217}
+    - target: {fileID: 5233727515376867189, guid: a486f8694a41a874780c19d31a0eac54,
+        type: 3}
+      propertyPath: LoopMusic
+      value: 
+      objectReference: {fileID: 1692304836}
     - target: {fileID: 5233727515376867189, guid: a486f8694a41a874780c19d31a0eac54,
         type: 3}
       propertyPath: TimerText
@@ -1717,25 +1703,15 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3077541949697409137, guid: a486f8694a41a874780c19d31a0eac54,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4356972474687466055}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a486f8694a41a874780c19d31a0eac54, type: 3}
---- !u!1 &4356972474687466054 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3077541949697409137, guid: a486f8694a41a874780c19d31a0eac54,
+--- !u!114 &4356972474687466055 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8449448510127204411, guid: a486f8694a41a874780c19d31a0eac54,
     type: 3}
   m_PrefabInstance: {fileID: 4356972474687466053}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4356972474687466055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4356972474687466054}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f51045c6080095e45ad5848d80203056, type: 3}
@@ -1747,7 +1723,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 4356972474687466053}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4356972474687466054}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6286d2d5f9c6af549b430114afcd1dbd, type: 3}

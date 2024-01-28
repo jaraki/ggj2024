@@ -860,45 +860,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Credits
-
-
-    Programmers
-
-    Jeffrey Araki
-
-    John Francis Collins
-    III (Bucky)
-
-
-    Artists
-
-    Gabriel Conway-Burt
-
-
-    Sound
-
-    Sidney Dubord
-
-    Jimmy
-    Johnston
-
-
-    Producer
-
-    Dylan Sands
-
-
-    Voice Acting
-
-    Isabel
-
-    Maria
-
-    Dylan
-    Sands
-
-    John Francis Collins III (Bucky)'
+  m_text: "Credits\n\nProgrammers\nJeffrey Araki\nJohn Francis Collins III (Bucky)\n\nArtists\nGabriel
+    Conway-Burt\n\nSound\nSidney Dubord\nJimmy Johnston\n\nProducer\nDylan Sands\n\nVoice
+    Acting\nIsabel Veliz\nMar\xEDa Sol\xF3rzano\nDylan Sands\nJohn Francis Collins
+    III (Bucky)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

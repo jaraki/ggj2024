@@ -18,6 +18,9 @@ public class Credits : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if(Input.GetKeyDown(KeyCode.Escape)) {
+            Loader.LoadMenu();
+        }
         if(currentTime < CreditsTime) {
             currentTime += Time.deltaTime;
         }
