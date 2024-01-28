@@ -61,7 +61,7 @@ public class PlayerManager : MonoBehaviour {
 
         int layer = NumPlayers + 7;
         shape.Init(NumPlayers, layer, playerMats[NumPlayers]);
-        controller.Init(input, layer);
+        controller.Init(NumPlayers, input, layer);
         SetSpawn(input.transform, NumPlayers);
         players.Add(controller);
         NumPlayers++;

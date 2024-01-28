@@ -58,11 +58,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: Goudymedieval-K0Rl SDF
+  m_Name: GoudyText
   m_EditorClassIdentifier: 
-  hashCode: -370889086
+  hashCode: 476737053
   material: {fileID: 6722939099590070761}
-  materialHashCode: 1817854434
+  materialHashCode: 2059950493
   m_Version: 1.1.0
   m_SourceFontFileGUID: 80ff9a185053fe645909e56d8dfd96ed
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 80ff9a185053fe645909e56d8dfd96ed,
@@ -1550,7 +1550,7 @@ Material:
     - _ColorMask: 15
     - _CullMode: 0
     - _Diffuse: 0.5
-    - _FaceDilate: 0.56
+    - _FaceDilate: 0
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
     - _GlowInner: 0.05
@@ -1564,12 +1564,12 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0.51
+    - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
-    - _ScaleRatioA: 0.7157058
-    - _ScaleRatioB: 0.22725001
-    - _ScaleRatioC: 0.22725001
+    - _ScaleRatioA: 0.9
+    - _ScaleRatioB: 0.73125
+    - _ScaleRatioC: 0.73125
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0

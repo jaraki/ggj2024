@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,16 +14,20 @@ public class PlayerController : MonoBehaviour {
     public Collider[] colliders { get; private set; }
     RaycastHit[] hits = new RaycastHit[32];
 
+    public List<GruntCollection> grunts = new List<GruntCollection>();
+    GruntCollection myGrunts;
+    AudioSource source;
+
     // Start is called before the first frame update
     void Awake() {
         body = GetComponent<Rigidbody>();
+        source = GetComponent<AudioSource>();
     }
 
     PlayerInput input;
-    int layer;
     int groundLayers = 1 << Layers.Ground | 1 << Layers.Player1 | 1 << Layers.Player2 | 1 << Layers.Player3 | 1 << Layers.Player4;
-    public void Init(PlayerInput input, int layer) {
-
+    public void Init(int playerIndex, PlayerInput input, int layer) {
+        myGrunts = grunts[playerIndex];
         this.input = input;
         groundLayers &= ~(1 << layer); // remove your layer from the ground layers
 
@@ -47,6 +52,12 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    void PlayRandomSound() {
+        source.clip = myGrunts.grunts[Random.Range(0, myGrunts.grunts.Length)];
+        source.pitch = Random.Range(0.9f, 1.1f);
+        source.Play();
+    }
+
     Quaternion startRot = Quaternion.identity;
     Quaternion targetRot = Quaternion.identity;
 
@@ -54,11 +65,13 @@ public class PlayerController : MonoBehaviour {
         startRot = body.rotation;
         targetRot *= Quaternion.Euler(0, 0, -90);
         time = 0.0f;
+        PlayRandomSound();
     }
     private void RotateLeft(InputAction.CallbackContext obj) {
         startRot = body.rotation;
         targetRot *= Quaternion.Euler(0, 0, 90);
         time = 0.0f;
+        PlayRandomSound();
     }
 
     float groundedLockout = 0.0f;
@@ -67,6 +80,7 @@ public class PlayerController : MonoBehaviour {
             Vector3 vel = body.velocity;
             vel.y = jumpSpeed;
             body.velocity = vel;
+            PlayRandomSound();
         }
         grounded = false;
         groundedLockout = 0.1f;
@@ -119,4 +133,9 @@ public class PlayerController : MonoBehaviour {
     }
 
 
+}
+
+[System.Serializable]
+public struct GruntCollection {
+    public AudioClip[] grunts;
 }

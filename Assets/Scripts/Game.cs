@@ -33,12 +33,12 @@ public class Game : MonoBehaviour {
     void Start() {
         originalFontSize = CountdownText.fontSize;
         StartCoroutine(Countdown());
+        Timer.gameObject.SetActive(false);
     }
 
     void SpawnLevel() {
         Levels[CurrentLevelIndex].Spawn();
     }
-
 
     IEnumerator SpawnDialog(string text, float duration) {
         var go = Instantiate(DialogPrefab, FindAnyObjectByType<Canvas>().transform);
@@ -54,7 +54,7 @@ public class Game : MonoBehaviour {
             State = GameState.Waiting;
         } else if (State == GameState.Started) {
             WaitingText.text = "";
-            if(Music && !Music.isPlaying) {
+            if (Music && !Music.isPlaying) {
                 Music.Play();
             }
             var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
@@ -67,7 +67,7 @@ public class Game : MonoBehaviour {
             }
             TimerText.text = Math.Ceiling(Timer.value).ToString();
             if (Timer.value <= 0 || overlap == 100) {
-                Timer.value = 0;
+                //Timer.value = 0;
                 if (Music) {
                     Music.Stop();
                 }
@@ -93,21 +93,22 @@ public class Game : MonoBehaviour {
     }
 
     IEnumerator StartNextLevel(int endingLineIndex, string closingLine) {
-        Levels[CurrentLevelIndex].EndingAudio[endingLineIndex].Play();
-        yield return StartCoroutine(SpawnDialog(Levels[CurrentLevelIndex].EndingLines[endingLineIndex], Levels[CurrentLevelIndex].EndingAudio[endingLineIndex].clip.length));
-        Levels[CurrentLevelIndex].ClosingAudio.Play();
-        yield return StartCoroutine(SpawnDialog(closingLine, Levels[CurrentLevelIndex].ClosingAudio.clip.length));
+        var level = Levels[CurrentLevelIndex];
+        level.EndingAudio[endingLineIndex].Play();
+        yield return StartCoroutine(SpawnDialog(level.EndingLines[endingLineIndex], level.EndingAudio[endingLineIndex].clip.length));
+        level.ClosingAudio.Play();
+        yield return StartCoroutine(SpawnDialog(closingLine, level.ClosingAudio.clip.length));
         State = GameState.Waiting;
-        Levels[CurrentLevelIndex].gameObject.SetActive(false);
+        level.gameObject.SetActive(false);
         CurrentLevelIndex++;
+        level = Levels[CurrentLevelIndex];
+        foreach (var img in level.fadeOutObjects) {
+            img.gameObject.SetActive(true);
+        }
         if (CurrentLevelIndex >= Levels.Length) {
             CurrentLevelIndex = 0;
             yield return StartCoroutine(SpawnDialog(winningDialog, 3));
             // todo: load winning scene
-        }
-        // toggle on anything
-        foreach (var toggle in Levels[CurrentLevelIndex].toggleActive) {
-            toggle.SetActive(!toggle.activeInHierarchy);
         }
         PlayerManager.SetFreeze(false);
         PlayerManager.ResetPlayerSpawns();
@@ -116,7 +117,7 @@ public class Game : MonoBehaviour {
 
     IEnumerator Countdown() {
         var level = Levels[CurrentLevelIndex];
-        
+
         Timer.maxValue = level.TimeLimit;
         Timer.value = level.TimeLimit;
         if (level.OpeningAudio) {
@@ -127,15 +128,22 @@ public class Game : MonoBehaviour {
         while (timer > 0) {
             CountdownText.text = Math.Ceiling(timer).ToString();
             var delta = Math.Ceiling(timer) - timer;
-            if(delta < 0.25f) {
+            if (delta < 0.25f) {
                 delta = 0.25f;
             }
+            foreach (var img in level.fadeOutObjects) {
+                img.color = new Color(1, 1, 1, timer / (CountdownTime / 2.0f));
+            }
             CountdownText.fontSize = (float)(originalFontSize / delta);
-            timer -= Time.deltaTime;
+            timer -= Time.deltaTime * 1.5f;
             yield return new WaitForSeconds(Time.deltaTime);
+        }
+        foreach (var img in level.fadeOutObjects) {
+            img.gameObject.SetActive(false);
         }
         CountdownText.text = "";
         SpawnLevel();
+        Timer.gameObject.SetActive(true);
         State = GameState.Started;
     }
 }

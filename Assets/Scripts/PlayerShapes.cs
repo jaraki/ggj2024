@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
 
+
 public class PlayerShapes : MonoBehaviour {
     public const int GridSize = 4;
     public const int NumStates = 4;
     public GameObject CellPrefab;
     public Transform ModelParent;
-    public int CurrentState;
+
+    public GameObject[] ModelPrefabs;
+
     /// <summary>
     /// This has to be a 1d array in order for serialization to work correctly with the custom editor
     /// </summary>
@@ -31,9 +34,8 @@ public class PlayerShapes : MonoBehaviour {
 
     }
 
-    public void Init(int mode, int layer, Material mat) {
-        CurrentState = mode;
-        int[] currentState = GetState(CurrentState);
+    public void Init(int playerIndex, int layer, Material mat) {
+        int[] currentState = GetState(playerIndex);
         for (int j = 0; j < GridSize; ++j) {
             for (int i = 0; i < GridSize; ++i) {
                 if (currentState[j * GridSize + i] != 0) {
@@ -55,3 +57,5 @@ public class PlayerShapes : MonoBehaviour {
 
     }
 }
+
+
