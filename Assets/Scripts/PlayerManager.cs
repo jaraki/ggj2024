@@ -71,15 +71,9 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
-    void ResetPlayerSpawns() {
+    public void ResetPlayerSpawns() {
         for (int i = 0; i < players.Count; ++i) {
             SetSpawn(players[i].transform, i);
-        }
-    }
-
-    void Update() {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.P)) {
-            ResetPlayerSpawns();
         }
     }
 

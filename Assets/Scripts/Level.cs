@@ -5,8 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Level : MonoBehaviour {
     public string OpeningLine;
-    public float TimeLimit = 15.0f;
-    
+    public float TimeLimit = 15.0f;    
     public string[] EndingLines = new string[4];
     public string ClosingLine;
     public const int Size = 11;
@@ -14,6 +13,7 @@ public class Level : MonoBehaviour {
     public FillShape FillShape;
     [HideInInspector]
     public int[] Board = new int[Size * Size];
+    public GameObject[] toggleActive;
 
     public void Spawn() {
         for (int i = 0; i < Size; i++) {
@@ -27,8 +27,4 @@ public class Level : MonoBehaviour {
         FillShape.Init();
     }
 
-    // Update is called once per frame
-    void Update() {
-
-    }
 }
