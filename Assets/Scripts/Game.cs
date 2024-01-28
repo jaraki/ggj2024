@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
+using System.Net.Http.Headers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public enum GameState {
@@ -13,10 +16,14 @@ public enum GameState {
 }
 
 public class Game : MonoBehaviour {
+    public TMP_Text InGameMenuTitle;
+    public GameObject ResumeButton;
+    public GameObject RestartButton;
     public GameObject InGameMenu;
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
     public AudioSource Music;
+    public AudioSource LoopMusic;
     public Level[] Levels;
     public string winningDialog = "Well done, now you can die anyways!";
     public const int MinPlayers = 4;
@@ -30,6 +37,8 @@ public class Game : MonoBehaviour {
     public TMP_Text CountdownText;
     public TMP_Text FillText;
     private double originalFontSize;
+    public Animator KingAnim;
+    public EventSystem EventSystem;
 
     // Start is called before the first frame update
     void Start() {
@@ -37,6 +46,13 @@ public class Game : MonoBehaviour {
         StartCoroutine(Countdown());
         Timer.gameObject.SetActive(false);
         InGameMenu.SetActive(false);
+
+        InputActions act = new InputActions();
+        act.Game.Enable();
+        act.Game.Pause.performed += PauseAction;
+
+        //pauseAction.action.performed += PauseAction;
+        //pauseAction.action.Enable();
     }
 
     void SpawnLevel() {
@@ -44,9 +60,11 @@ public class Game : MonoBehaviour {
     }
 
     IEnumerator SpawnDialog(string text, float duration) {
+        KingAnim.SetBool("isTalking", true);
         var go = Instantiate(DialogPrefab, FindAnyObjectByType<Canvas>().transform);
         var dialog = go.GetComponent<Dialog>();
         yield return dialog.SetLine(text, duration);
+        KingAnim.SetBool("isTalking", false);
     }
 
     public void Resume() {
@@ -55,27 +73,41 @@ public class Game : MonoBehaviour {
         InGameMenu.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update() {
-        if(Input.GetKeyDown(KeyCode.Escape)) {
-            if(State == GameState.Paused) {
-                Resume();
-            } else {
-                if(State == GameState.Started) {
-                    State = GameState.Paused;
-                    Time.timeScale = 0f;
-                    InGameMenu.SetActive(true);
-                }
+    private void PauseAction(InputAction.CallbackContext obj) {
+        if (State == GameState.Paused) {
+            Resume();
+        } else {
+            if (State == GameState.Started) {
+                State = GameState.Paused;
+                Time.timeScale = 0f;
+                InGameMenu.SetActive(true);
+                ResumeButton.SetActive(true);
             }
         }
+    }
+
+    // Update is called once per frame
+    void Update() {
+        //if(Input.GetKeyDown(KeyCode.Escape)) {
+        //    if(State == GameState.Paused) {
+        //        Resume();
+        //    } else {
+        //        if(State == GameState.Started) {
+        //            State = GameState.Paused;
+        //            Time.timeScale = 0f;
+        //            InGameMenu.SetActive(true);
+        //            ResumeButton.SetActive(true);
+        //        }
+        //    }
+        //}
         if (PlayerManager.NumPlayers < MinPlayers) {
             int difference = MinPlayers - PlayerManager.NumPlayers;
             WaitingText.text = $"Waiting for {difference} More Players...";
             State = GameState.Waiting;
         } else if (State == GameState.Started) {
             WaitingText.text = "";
-            if (Music && !Music.isPlaying) {
-                Music.Play();
+            if (LoopMusic && !LoopMusic.isPlaying) {
+                LoopMusic.Play();
             }
             var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
             if (overlap >= 99) {
@@ -85,26 +117,40 @@ public class Game : MonoBehaviour {
                 FillText.text = $"{overlap}%";
                 Timer.value -= Time.deltaTime;
             }
+            if (Timer.value <= Music.clip.length) {
+                if (LoopMusic && LoopMusic.isPlaying) {
+                    LoopMusic.Stop();
+                }
+                if (Music && !Music.isPlaying) {
+                    Music.Play();
+                }
+            }
             TimerText.text = Math.Ceiling(Timer.value).ToString();
             if (Timer.value <= 0 || overlap == 100) {
-                //Timer.value = 0;
-                if (Music) {
+                if (Music && Music.isPlaying) {
                     Music.Stop();
                 }
                 PlayerManager.SetFreeze(true);
                 if (State == GameState.Started) {
                     string closingLine = Levels[CurrentLevelIndex].ClosingLine;
                     int index;
-                    if (overlap >= 0.76) {
+                    if (overlap >= 75) {
                         index = 0;
-                    } else if (overlap >= 0.51) {
+                    } else if (overlap >= 50) {
                         index = 1;
-                    } else if (overlap >= 0.26) {
+                        KingAnim.SetTrigger("Dissaproval");
+                    } else if (overlap >= 25) {
                         index = 2;
+                        KingAnim.SetTrigger("Sad");
                     } else {
                         index = 3;
+                        KingAnim.SetTrigger("Sad");
                     }
-                    StartCoroutine(StartNextLevel(index, closingLine));
+                    if (index < 3) {
+                        StartCoroutine(StartNextLevel(index, closingLine));
+                    } else {
+                        StartCoroutine(GameOver(closingLine));
+                    }
                 }
                 TimerText.text = "Time's Up!";
                 State = GameState.Ended;
@@ -135,9 +181,24 @@ public class Game : MonoBehaviour {
     }
 
     IEnumerator WinGame() {
-        yield return StartCoroutine(SpawnDialog(winningDialog, 3));
+        float duration = 3;
+        yield return StartCoroutine(SpawnDialog(winningDialog, duration));
+        yield return new WaitForSeconds(duration);
         // TODO: winning cutscene
-        CountdownText.text = "You Win!";
+        InGameMenu.SetActive(true);
+        InGameMenuTitle.text = "You Win!";
+        ResumeButton.SetActive(false);
+    }
+
+    IEnumerator GameOver(string dialog) {
+        float duration = 3;
+        yield return StartCoroutine(SpawnDialog(dialog, duration));
+        yield return new WaitForSeconds(duration);
+        // TODO: winning cutscene
+        InGameMenu.SetActive(true);
+        InGameMenuTitle.text = "Game Over!";
+        ResumeButton.SetActive(false);
+        EventSystem.SetSelectedGameObject(RestartButton);
     }
 
     IEnumerator Countdown() {
