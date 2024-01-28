@@ -10,6 +10,8 @@ public class PlayerManager : MonoBehaviour
 
     public int NumPlayers = 0;
 
+    public Transform[] spawns;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -25,8 +27,8 @@ public class PlayerManager : MonoBehaviour
         int layer = NumPlayers + 7;
         shape.Init(NumPlayers, layer);
         controller.Init(input, layer);
+        input.transform.position = spawns[NumPlayers].position + Vector3.up * 3.0f;
         NumPlayers++;
-        input.transform.position = Vector3.up * 3.0f;
     }
 
     // Update is called once per frame
