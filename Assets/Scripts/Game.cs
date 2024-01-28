@@ -13,6 +13,8 @@ public enum GameState {
 }
 
 public class Game : MonoBehaviour {
+    public TMP_Text InGameMenuTitle;
+    public GameObject ResumeButton;
     public GameObject InGameMenu;
     public GameObject DialogPrefab;
     public AudioSource GameOverSound;
@@ -66,6 +68,7 @@ public class Game : MonoBehaviour {
                     State = GameState.Paused;
                     Time.timeScale = 0f;
                     InGameMenu.SetActive(true);
+                    ResumeButton.SetActive(true);
                 }
             }
         }
@@ -112,7 +115,11 @@ public class Game : MonoBehaviour {
                     } else {
                         index = 3;
                     }
-                    StartCoroutine(StartNextLevel(index, closingLine));
+                    if(index < 3) {
+                        StartCoroutine(StartNextLevel(index, closingLine));
+                    } else {
+                        StartCoroutine(GameOver(closingLine));
+                    }
                 }
                 TimerText.text = "Time's Up!";
                 State = GameState.Ended;
@@ -143,9 +150,23 @@ public class Game : MonoBehaviour {
     }
 
     IEnumerator WinGame() {
-        yield return StartCoroutine(SpawnDialog(winningDialog, 3));
+        float duration = 3;
+        yield return StartCoroutine(SpawnDialog(winningDialog, duration));
+        yield return new WaitForSeconds(duration);
         // TODO: winning cutscene
-        CountdownText.text = "You Win!";
+        InGameMenu.SetActive(true);
+        InGameMenuTitle.text = "You Win!";
+        ResumeButton.SetActive(false);
+    }
+
+    IEnumerator GameOver(string dialog) {
+        float duration = 3;
+        yield return StartCoroutine(SpawnDialog(dialog, duration));
+        yield return new WaitForSeconds(duration);
+        // TODO: winning cutscene
+        InGameMenu.SetActive(true);
+        InGameMenuTitle.text = "Game Over!";
+        ResumeButton.SetActive(false);
     }
 
     IEnumerator Countdown() {
