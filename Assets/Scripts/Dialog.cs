@@ -17,6 +17,10 @@ public class Dialog : MonoBehaviour {
             LineText.text += line[i];
             yield return new WaitForSeconds(duration / line.Length);
         }
+        StartCoroutine(Delete());
+    }
+
+    IEnumerator Delete() {
         yield return new WaitForSeconds(DeletionDelay);
         Destroy(gameObject);
     }

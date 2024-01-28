@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Level : MonoBehaviour {
@@ -13,7 +14,7 @@ public class Level : MonoBehaviour {
     public FillShape FillShape;
     [HideInInspector]
     public int[] Board = new int[Size * Size];
-    public GameObject[] toggleActive;
+    public Image[] fadeOutObjects;
     public AudioSource OpeningAudio;
     public AudioSource[] EndingAudio;
     public AudioSource ClosingAudio;
