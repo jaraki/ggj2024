@@ -5,15 +5,15 @@ using UnityEngine;
 [System.Serializable]
 public class Level : MonoBehaviour {
     public string OpeningLine;
-    public string[] EndingLines = new string[5];
+    public string[] EndingLines = new string[4];
     public string ClosingLine;
     public const int Size = 11;
     public GameObject CellPrefab;
+    public FillShape FillShape;
     [HideInInspector]
     public int[] Board = new int[Size * Size];
 
-    // Start is called before the first frame update
-    void Awake() {
+    public void Spawn() {
         for (int i = 0; i < Size; i++) {
             for (int j = 0; j < Size; j++) {
                 if (Board[j * Size + i] != 0) {
@@ -22,6 +22,7 @@ public class Level : MonoBehaviour {
                 }
             }
         }
+        FillShape.Init();
     }
 
     // Update is called once per frame

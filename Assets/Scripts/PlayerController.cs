@@ -102,14 +102,14 @@ public class PlayerController : MonoBehaviour {
     bool grounded = false;
 
     private void OnTriggerExit(Collider other) {
-        var shape = other.transform.root.GetComponent<FillShape>();
+        var shape = other.transform.parent.GetComponent<FillShape>();
         if (shape) {
             shape.RemovePlayer(this);
         }
     }
 
     private void OnTriggerStay(Collider other) {
-        var shape = other.transform.root.GetComponent<FillShape>();
+        var shape = other.transform.parent.GetComponent<FillShape>();
         if (shape) {
             shape.AddPlayer(this);
         }
