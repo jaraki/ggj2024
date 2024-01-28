@@ -60,7 +60,8 @@ public class PlayerManager : MonoBehaviour {
         var shape = input.GetComponent<PlayerShapes>();
 
         int layer = NumPlayers + 7;
-        shape.Init(NumPlayers, layer, playerMats[NumPlayers]);
+        //shape.Init(NumPlayers, layer, playerMats[NumPlayers]);
+        shape.InitModel(NumPlayers, layer);
         controller.Init(NumPlayers, input, layer);
         SetSpawn(input.transform, NumPlayers);
         players.Add(controller);
