@@ -83,8 +83,12 @@ public class Game : MonoBehaviour {
                 lastState = State;
                 State = GameState.Paused;
                 Time.timeScale = 0f;
-                InGameMenu.SetActive(true);
-                ResumeButton.SetActive(true);
+                if (InGameMenu) {
+                    InGameMenu.SetActive(true);
+                }
+                if (ResumeButton) {
+                    ResumeButton.SetActive(true);
+                }
             }
         }
     }

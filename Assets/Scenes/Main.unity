@@ -4761,23 +4761,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8283494152295743259, guid: adbfb5d73e1cb97448fdbfc08f1ae2ae,
-        type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 63dc70102089e6c439d9fba288e05922,
-        type: 2}
-    - target: {fileID: 8283494152295743259, guid: adbfb5d73e1cb97448fdbfc08f1ae2ae,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -3235133507720782261, guid: 63dc70102089e6c439d9fba288e05922,
-        type: 2}
-    - target: {fileID: 8283494152295743259, guid: adbfb5d73e1cb97448fdbfc08f1ae2ae,
-        type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

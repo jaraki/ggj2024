@@ -267,7 +267,8 @@ MonoBehaviour:
   - {fileID: 866362532234237591}
   - {fileID: 242799049003299547}
   - {fileID: 9062771002429219274}
-  winningDialog: Well done, now you can die anyways!
+  winningDialog: Thanks for the show. That was some well needed BUFFOONERY! Now dance
+    with me!
   State: 0
   CurrentLevelIndex: 0
   PlayerManager: {fileID: 5796472403509290596}

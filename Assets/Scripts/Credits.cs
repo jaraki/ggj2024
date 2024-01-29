@@ -28,7 +28,7 @@ public class Credits : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (currentTime < CreditsTime) {
-            currentTime += Time.deltaTime;
+            currentTime += Time.deltaTime * 1f;
         }
 
         double percentage = currentTime / CreditsTime;
