@@ -499,7 +499,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3c6ad1b57e2984c45b61cb1b6fac4976, type: 3}
+  m_audioClip: {fileID: 8300000, guid: aa123f22c398f3a41bda8237dad41662, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -634,7 +634,7 @@ MonoBehaviour:
     Do your best to entertain me, and I\u2019ll think about letting you live. If
     I don\u2019t find you as fun as torturing my subjects I\u2019ll have you sent
     TO THE DUNGEON.  Now dance for me!"
-  TimeLimit: 5
+  TimeLimit: 30
   EndingLines:
   - 'Well done, fools. I expected as much. '
   - Acceptable. I shall allow it.
@@ -1745,7 +1745,7 @@ MonoBehaviour:
   OpeningLine: ' Now STACK for me, peons! '
   TimeLimit: 60
   EndingLines:
-  - yes!
+  - Yes! That was excellent.
   - "I saw that. I may be mad but you can\u2019t fool me. "
   - This is your last chance you pig-headed simpleton.
   - Unacceptable! Guards, send them TO THE DUNGEON!

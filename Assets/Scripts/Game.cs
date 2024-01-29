@@ -188,6 +188,8 @@ public class Game : MonoBehaviour {
             VictorySound.Play();
         }
         // TODO: winning cutscene
+        Timer.gameObject.SetActive(false);
+        FillText.text = "";
         InGameMenu.SetActive(true);
         InGameMenuTitle.text = "You  Win!";
         ResumeButton.SetActive(false);
@@ -207,6 +209,8 @@ public class Game : MonoBehaviour {
         float endingDuration = level.EndingAudio[index].clip.length;
         yield return StartCoroutine(SpawnDialog(endingLine, endingDuration));
         level.ClosingAudio.Play();
+        Timer.gameObject.SetActive(false);
+        FillText.text = "";
         float closingDuration = level.ClosingAudio.clip.length;
         yield return StartCoroutine(SpawnDialog(closingLine, closingDuration));
         yield return new WaitForSeconds(3);
@@ -227,10 +231,10 @@ public class Game : MonoBehaviour {
         if (level.OpeningAudio) {
             level.OpeningAudio.Play();
             int size = 0;
-            if(level.OpeningLine.Length > 200) {
+            if (level.OpeningLine.Length > 200) {
                 size = 32;
             }
-            yield return StartCoroutine(SpawnDialog(level.OpeningLine, level.OpeningAudio.clip.length, size));
+            yield return StartCoroutine(SpawnDialog(level.OpeningLine, level.OpeningAudio.clip.length * 0.85f, size));
         }
         float timer = CountdownTime;
         if (CountdownSound && !CountdownSound.isPlaying) {
