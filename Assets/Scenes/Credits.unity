@@ -598,8 +598,6 @@ MonoBehaviour:
   CreditsText: {fileID: 1362403006}
   CreditsTime: 33
   CreditsEndY: 1500
-  pauseAction: {fileID: 5566195140217771543, guid: 751713751617d444e811112bdebb5dc5,
-    type: 3}
 --- !u!114 &523763640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,10 +861,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Credits\n\nProgramming, Level Design\nJeffrey Araki\nJohn Francis Collins
-    III (Bucky)\n\n3D Art, Animation\nGabriel Conway-Burt\n\nMusic, Sound\nSidney
-    Dubord\nJimmy Johnston\n\nNarrative Design, Production\nDylan Sands\n\nVoice
+    III (Bucky)\n\n3D Art, Animation\nGabriel Conway-Burt\nSinjin Mendenhall\n\nMusic,
+    Sound\nSidney Dubord\nJimmy Johnston\n\nNarrative Design, Production\nDylan Sands\n\nVoice
     Acting\nIsabel Veliz\nMar\xEDa Sol\xF3rzano\nDylan Sands\nJohn Francis Collins
-    III (Bucky)"
+    III (Bucky)\n\nSpecial Thanks to Tim Samoff and Azusa Pacific University\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 492d67f857b00f243a0c3f642d94b151, type: 2}
   m_sharedMaterial: {fileID: 6722939099590070761, guid: 492d67f857b00f243a0c3f642d94b151,
