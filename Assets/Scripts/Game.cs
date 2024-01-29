@@ -26,7 +26,7 @@ public class Game : MonoBehaviour {
     public AudioSource CountdownSound;
     public AudioSource VictorySound;
     public Level[] Levels;
-    public string winningDialog = "Well done, now you can die anyways!";
+    public string winningDialog;
     public const int MinPlayers = 4;
     public GameState State;
     public int CurrentLevelIndex;
@@ -44,7 +44,7 @@ public class Game : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        Application.targetFrameRate = 120;
+        Application.targetFrameRate = 60;
 
         originalFontSize = CountdownText.fontSize;
         StartCoroutine(Countdown());
@@ -67,7 +67,8 @@ public class Game : MonoBehaviour {
         if (size > 0) {
             dialog.LineText.fontSize = size;
         }
-        yield return dialog.SetLine(text, duration * 0.9f);
+        yield return dialog.SetLine(text, duration * 0.8f);
+        yield return new WaitForSeconds(1.0f);
         KingAnim.SetBool("isTalking", false);
     }
 
@@ -253,8 +254,8 @@ public class Game : MonoBehaviour {
                 img.color = new Color(1, 1, 1, timer / (CountdownTime / 2.0f));
             }
             CountdownText.fontSize = (float)(originalFontSize / delta);
-            timer -= Time.deltaTime * 1.5f;
-            yield return new WaitForSeconds(Time.deltaTime);
+            timer -= Time.deltaTime * 1.25f;
+            yield return null;
         }
         foreach (var img in level.fadeOutObjects) {
             img.gameObject.SetActive(false);
