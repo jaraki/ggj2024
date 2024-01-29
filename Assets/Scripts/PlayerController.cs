@@ -29,8 +29,10 @@ public class PlayerController : MonoBehaviour {
     public bool rotating { get; private set; } = false;
 
     PlayerInput input;
+    int playerIndex = -1;
     int groundLayers = 1 << Layers.Ground | 1 << Layers.Player1 | 1 << Layers.Player2 | 1 << Layers.Player3 | 1 << Layers.Player4;
     public void Init(int playerIndex, PlayerInput input, int layer) {
+        this.playerIndex = playerIndex;
         myGrunts = grunts[playerIndex];
         this.input = input;
         groundLayers &= ~(1 << layer); // remove your layer from the ground layers
@@ -57,6 +59,17 @@ public class PlayerController : MonoBehaviour {
         //}
     }
 
+    Vector3 spawnPosition = Vector3.zero;
+    public void SetSpawn(Vector3 pos) {
+        spawnPosition = pos;
+        transform.position = spawnPosition;
+    }
+
+    public void Respawn() {
+        transform.position = spawnPosition;
+        targetRot = Quaternion.identity;
+    }
+
     void PlayRandomSound() {
         source.clip = myGrunts.grunts[Random.Range(0, myGrunts.grunts.Length)];
         source.pitch = Random.Range(0.9f, 1.1f);
@@ -81,9 +94,6 @@ public class PlayerController : MonoBehaviour {
         targetRot *= Quaternion.Euler(0, 0, rot);
         time = 0.0f;
         PlayRandomSound();
-    }
-    public void ResetRot() {
-        targetRot = Quaternion.identity;
     }
 
     float groundedLockout = 0.0f;
@@ -132,6 +142,11 @@ public class PlayerController : MonoBehaviour {
                     break;
                 }
             }
+        }
+
+        // failsafe
+        if(transform.position.y < -2.0f) {
+            Respawn();
         }
     }
 

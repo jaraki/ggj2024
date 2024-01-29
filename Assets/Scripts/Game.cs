@@ -44,6 +44,8 @@ public class Game : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        Application.targetFrameRate = 120;
+
         originalFontSize = CountdownText.fontSize;
         StartCoroutine(Countdown());
         Timer.gameObject.SetActive(false);
@@ -65,7 +67,7 @@ public class Game : MonoBehaviour {
         if (size > 0) {
             dialog.LineText.fontSize = size;
         }
-        yield return dialog.SetLine(text, duration);
+        yield return dialog.SetLine(text, duration * 0.9f);
         KingAnim.SetBool("isTalking", false);
     }
 
@@ -104,12 +106,12 @@ public class Game : MonoBehaviour {
             if (LoopMusic && !LoopMusic.isPlaying) {
                 LoopMusic.Play();
             }
-            var overlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
-            if (overlap >= 99) {
-                overlap = 100;
+            var intOverlap = Mathf.RoundToInt(Levels[CurrentLevelIndex].FillShape.CalculateOverlap() * 100.0f);
+            if (intOverlap >= 99) {
+                intOverlap = 100;
             }
             if (Timer.value > 0) {
-                FillText.text = $"{overlap}%";
+                FillText.text = $"{intOverlap}%";
                 Timer.value -= Time.deltaTime;
             }
             if (Timer.value <= Music.clip.length) {
@@ -121,7 +123,7 @@ public class Game : MonoBehaviour {
                 //}
             }
             TimerText.text = Math.Ceiling(Timer.value).ToString();
-            if (Timer.value <= 0 || overlap == 100) {
+            if (Timer.value <= 0 || intOverlap == 100) {
                 //if (Music && Music.isPlaying) {
                 //    Music.Stop();
                 //}
@@ -131,29 +133,25 @@ public class Game : MonoBehaviour {
                 PlayerManager.SetFreeze(true);
                 if (State == GameState.Started) {
                     var level = Levels[CurrentLevelIndex];
-                    string closingLine = level.ClosingLine;
                     int index;
-                    if (overlap < level.passPercentage) {
+                    if (intOverlap < level.passPercentage * 100) {
                         index = 3;
                         StartCoroutine(GameOver(index));
                     } else {
-                        if (overlap >= 75) {
+                        if (intOverlap >= 75) {
                             index = 0;
-                        } else if (overlap >= 50) {
+                        } else if (intOverlap >= 50) {
                             index = 1;
                             KingAnim.SetTrigger("Dissaproval");
-                        } else if (overlap >= 25) {
+                        } else if (intOverlap >= 25) {
                             index = 2;
                             KingAnim.SetTrigger("Sad");
                         } else {
                             index = 3;
                             KingAnim.SetTrigger("Sad");
                         }
-                        if (index < 3) {
-                            StartCoroutine(StartNextLevel(index, closingLine));
-                        } else {
-                            StartCoroutine(GameOver(index));
-                        }
+                        string closingLine = level.ClosingLine;
+                        StartCoroutine(StartNextLevel(index, closingLine));
                     }
                 }
                 TimerText.text = "Time's Up!";
@@ -179,7 +177,7 @@ public class Game : MonoBehaviour {
                 img.gameObject.SetActive(true);
             }
             PlayerManager.SetFreeze(false);
-            PlayerManager.ResetPlayerSpawns();
+            PlayerManager.RespawnPlayers();
             StartCoroutine(Countdown());
         }
     }
@@ -191,6 +189,7 @@ public class Game : MonoBehaviour {
         if (VictorySound && !VictorySound.isPlaying) {
             VictorySound.Play();
         }
+        PlayerManager.RespawnPlayers();
         // TODO: winning cutscene
         Timer.gameObject.SetActive(false);
         FillText.text = "";
@@ -238,7 +237,7 @@ public class Game : MonoBehaviour {
             if (level.OpeningLine.Length > 200) {
                 size = 32;
             }
-            yield return StartCoroutine(SpawnDialog(level.OpeningLine, level.OpeningAudio.clip.length * 0.85f, size));
+            yield return StartCoroutine(SpawnDialog(level.OpeningLine, level.OpeningAudio.clip.length, size));
         }
         float timer = CountdownTime;
         if (CountdownSound && !CountdownSound.isPlaying) {

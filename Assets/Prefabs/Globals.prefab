@@ -2789,8 +2789,8 @@ MonoBehaviour:
   OpeningLine: "Hold tight your buns. You might have to ROTATE this time\u2026 "
   TimeLimit: 45
   EndingLines:
-  - Yes, yes. Now do it again!
   - '*The Mad King Claps thrice*'
+  - Imperfection... despicable
   - Hold fast, cur!
   - " Test me once more and I\u2019ll skewer you like THE SWINE YOU ARE! "
   ClosingLine: " I see you\u2019ve got some moves. Once more!"

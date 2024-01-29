@@ -70,14 +70,13 @@ public class PlayerManager : MonoBehaviour {
 
     void SetSpawn(PlayerController player, int index) {
         if (index >= 0 && index < spawns.Length) {
-            player.transform.position = spawns[index].position + Vector3.up * 3.0f;
+            player.SetSpawn(spawns[index].position + Vector3.up * 3.0f);
         }
-        player.ResetRot();
     }
 
-    public void ResetPlayerSpawns() {
-        for (int i = 0; i < players.Count; ++i) {
-            SetSpawn(players[i], i);
+    public void RespawnPlayers() {
+        foreach (var player in players) {
+            player.Respawn();
         }
     }
 
